@@ -1,14 +1,18 @@
 import React, { useEffect, useState } from 'react'
-import { Button, FormGroup, Input, Label } from 'reactstrap';
+import { Button, FormGroup, Input, Label, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 import styles from "../stilos.module.css"
 import axios from 'axios';
 
-const Cadastrar = ({ inputs = {} }) => {
+const Cadastrar = ({ inputs = {}, url }) => {
     const [formulario, setformularuio] = useState(inputs);
     const [erro, setErro] = useState({});
     const [msg, setMsg] = useState("");
     const [desabilitar, setDesabilitar] = useState(false);
     const [textoBotaoCarregando, setTextoBotaoCarregando] = useState("CADASTRAR");
+
+    const [modal, setModal] = useState(false);
+
+    const toggle = () => setModal(!modal);
 
     const changeformulario = (e) => {
         const { name, value, files } = e.target;
@@ -20,7 +24,7 @@ const Cadastrar = ({ inputs = {} }) => {
 
     const enviar = (e) => {
         e.preventDefault();
-        axios.post('http://localhost:8000/cadastrar', formulario, {
+        axios.post(`http://localhost:8000/${url}`, formulario, {
             withCredentials: true,
             headers: {
                 "X-CSRF-TOKEN": localStorage.getItem("token")
@@ -42,26 +46,35 @@ const Cadastrar = ({ inputs = {} }) => {
 
     return (
         <div>
-            <form onSubmit={enviar}>
-                <FormGroup>
-                    {formulario ? Object.keys(formulario).map((valor, index) => {
-                        return (
-                            <div key={index}>
-                                <div className="">
-                                    <Label htmlFor={valor} className={styles.labels}>{valor}</Label>
-                                    <Input placeholder={valor} type={tipoInput(valor)} disabled={desabilitar} name={valor} onChange={changeformulario} />
-                                    <p className={styles.erro}>{erro[valor]}</p>
-                                </div>
-                            </div>
-                        )
-                    }) : ""}
-                </FormGroup>
-                <span className={styles.erro}>{msg}</span>
-                <div className="d-flex gap-2 justify-content-end">
-                    <Button color="danger" disabled={desabilitar} onClick={() => setModal(false)}>FECHAR</Button>
-                    <Button color="success" disabled={desabilitar}>{textoBotaoCarregando}</Button>
-                </div>
-            </form>
+            <Button color="success" onClick={toggle}>
+                CADASTRAR
+            </Button>
+            <Modal isOpen={modal} toggle={toggle}>
+                <ModalHeader toggle={toggle}>CADASTRAR</ModalHeader>
+                <ModalBody>
+                    <form onSubmit={enviar}>
+                        <FormGroup>
+                            {formulario ? Object.keys(formulario).map((valor, index) => {
+                                return (
+                                    <div key={index}>
+                                        <div className="">
+                                            <Label htmlFor={valor} className={styles.labels}>{valor}</Label>
+                                            <Input placeholder={valor} type={tipoInput(valor)} disabled={desabilitar} name={valor} onChange={changeformulario} />
+                                            <p className={styles.erro}>{erro[valor]}</p>
+                                        </div>
+                                    </div>
+                                )
+                            }) : ""}
+                        </FormGroup>
+                        <span className={styles.erro}>{msg}</span>
+                        <div className="d-flex gap-2 justify-content-end">
+                            <Button color="danger" disabled={desabilitar} onClick={() => setModal(false)}>FECHAR</Button>
+                            <Button color="success" disabled={desabilitar}>{textoBotaoCarregando}</Button>
+                        </div>
+                    </form>
+                </ModalBody>
+            </Modal>
+
         </div>
     )
 }
