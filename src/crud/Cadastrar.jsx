@@ -42,7 +42,20 @@ const Cadastrar = ({ inputs = {}, url }) => {
         if (tiposData.includes(tipo)) {
             return "date";
         }
+
+        if (tipo == "usuario_id") {
+            return "hidden";
+        }
     }
+
+    const tipoLabel = (tipo) => {
+        if (tipo == "usuario_id") {
+            return ""
+        }
+
+        return tipo;
+    }
+
 
     return (
         <div>
@@ -58,7 +71,7 @@ const Cadastrar = ({ inputs = {}, url }) => {
                                 return (
                                     <div key={index}>
                                         <div className="">
-                                            <Label htmlFor={valor} className={styles.labels}>{valor}</Label>
+                                            <Label htmlFor={valor} className={styles.labels}>{tipoLabel(valor)}</Label>
                                             <Input placeholder={valor} type={tipoInput(valor)} disabled={desabilitar} name={valor} onChange={changeformulario} />
                                             <p className={styles.erro}>{erro[valor]}</p>
                                         </div>

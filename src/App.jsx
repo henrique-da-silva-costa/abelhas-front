@@ -1,25 +1,24 @@
-import { useState } from 'react'
+import { useContext, useEffect } from 'react'
 import './App.css'
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import Home from './Home';
+import { Usuario } from './contexts/Usuario';
+import LoginRotas from './rotas/LoginRotas';
+import PadraoRotas from './rotas/PadraoRotas';
+import axios from 'axios';
 
 function App() {
-  const [token, setToken] = useState();
-  const [isOpen, setIsOpen] = useState(false);
+  useEffect(() => {
+    axios.get("http://localhost:8000/token", { withCredentials: true })
+      .then(response => {
+        localStorage.setItem("token", response.data.token);
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  }, []);
 
-  const toggle = () => setIsOpen(!isOpen);
+  const { auth, setAuth } = useContext(Usuario)
 
-  return (
-    <>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          {/* <Route path="/abelhas" element={<Abelhas />} />
-          <Route path="/divisoes" element={<Divisoes />} /> */}
-        </Routes>
-      </BrowserRouter>
-    </>
-  )
+  return auth ? <PadraoRotas /> : <LoginRotas />
 }
 
 export default App

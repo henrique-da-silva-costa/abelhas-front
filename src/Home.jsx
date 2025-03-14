@@ -1,32 +1,13 @@
-import React, { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom';
+import React, { useContext, useState } from 'react'
 import { Button, Offcanvas, OffcanvasBody, OffcanvasHeader } from 'reactstrap'
 import Abelhas from './paginas/Abelhas';
 import Divisoes from './paginas/Divisoes';
-import axios from 'axios';
-import Cadastrar from './crud/Cadastrar';
+import { Usuario } from './contexts/Usuario';
 
 const Home = () => {
     const [isOpen, setIsOpen] = useState(false);
-    const nav = useNavigate();
-    const [componente, setComponente] = useState();
-
-    useEffect(() => {
-        axios.get("http://localhost:8000/token", { withCredentials: true })
-            .then(response => {
-                localStorage.setItem("token", response.data.token);
-            })
-            .catch(error => {
-                console.error(error);
-            });
-    }, []);
-
-    const inputs = {
-        nome: "",
-        email: "",
-        senha: "",
-        confirmaSenha: ""
-    }
+    const [componente, setComponente] = useState(<Abelhas />);
+    const { setAuth } = useContext(Usuario);
 
     const linkPagina = (valor) => {
         setIsOpen(false);
@@ -46,14 +27,14 @@ const Home = () => {
                         Offcanvas Title
                     </OffcanvasHeader>
                     <OffcanvasBody>
-                        <div className="d-flex flex-column gap-2">
+                        <div className="d-flex flex-column gap-2 justify-content-end align-items-start">
                             <Button onClick={() => linkPagina(<Abelhas />)}>Abelhas</Button>
                             <Button onClick={() => linkPagina(<Divisoes />)}>Divisoes</Button>
+                            <Button color="danger" onClick={() => setAuth(false)}>SAIR</Button>
                         </div>
                     </OffcanvasBody>
                 </Offcanvas>
-            </div>
-            <Cadastrar inputs={inputs} url={"usuario/cadastrar"} />
+            </div >
             {componente}
         </>
     )
