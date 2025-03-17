@@ -6,6 +6,9 @@ import PadraoRotas from './rotas/PadraoRotas';
 import axios from 'axios';
 
 function App() {
+  const { auth, setAuth } = useContext(Usuario)
+  const usuarioEmail = sessionStorage.getItem("usuario") ? JSON.parse(sessionStorage.getItem("usuario")).email : "";
+
   useEffect(() => {
     axios.get("http://localhost:8000/token", { withCredentials: true })
       .then(response => {
@@ -14,9 +17,23 @@ function App() {
       .catch(error => {
         console.error(error);
       });
+
+    axios.get("http://localhost:8000/verificaremailapp", {
+      withCredentials: true,
+      params: { email: usuarioEmail }
+    })
+      .then(res => {
+        if (res.data.erro) {
+          setAuth(false);
+        }
+      })
+      .catch(err => {
+        if (err) {
+          alert("algo deu errado. Por favor contate o suporte");
+        }
+      });
   }, []);
 
-  const { auth, setAuth } = useContext(Usuario)
 
   return auth ? <PadraoRotas /> : <LoginRotas />
 }
