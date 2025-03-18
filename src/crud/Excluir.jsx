@@ -47,7 +47,7 @@ const Excluir = ({ titulo = "EXCLUIR", id = null, url, pegarDados = () => { } })
     return (
         <div>
             <Button color="danger" onClick={toggle}>EXCLUIR</Button>
-            <Modal isOpen={modal}>
+            <Modal backdrop="static" isOpen={modal}>
                 <ModalHeader toggle={toggle}>{titulo}</ModalHeader>
                 <ModalBody className="d-flex gap-2 flex-column justify-content-end">
                     <div className="d-flex gap-2 justify-content-end">

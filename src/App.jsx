@@ -30,6 +30,7 @@ function App() {
       .catch(err => {
         if (err) {
           alert("algo deu errado. Por favor contate o suporte");
+          setAuth(false);
         }
       });
   }, []);

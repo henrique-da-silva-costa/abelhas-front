@@ -15,6 +15,8 @@ const Abelhas = () => {
     const [paginaAtual, setPaginaAtual] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
     const [botaoDesabilitado, setBotaoDesabilitado] = useState(false);
+    const [generos, setGeneros] = useState([]);
+    const [status, setStatus] = useState([]);
 
     const pegarDados = (page) => {
         setBotaoDesabilitado(true)
@@ -37,6 +39,18 @@ const Abelhas = () => {
     }
 
     useEffect(() => {
+        axios.get("http://localhost:8000/generos").then((res) => {
+            setGeneros(res.data)
+        }).catch((err) => {
+            console.error(err);
+        })
+
+        axios.get("http://localhost:8000/status").then((res) => {
+            setStatus(res.data)
+        }).catch((err) => {
+            console.error(err);
+        })
+
         setTimeout(() => {
             pegarDados(paginaAtual);
         }, 1000);
@@ -66,7 +80,7 @@ const Abelhas = () => {
     return (
         <Container className="mt-3">
             <div className="text-end">
-                <Cadastrar inputs={inputs} url={"colmeia/cadastrar"} />
+                <Cadastrar generos={generos} status={status} inputs={inputs} url={"colmeia/cadastrar"} />
             </div>
             <div className="row">
                 {dados.length > 0 ?
@@ -90,7 +104,7 @@ const Abelhas = () => {
                                                 <p>{dado.nome}</p>
                                             </td>
                                             <td className="align-items-center d-flex gap-2 justify-content-center">
-                                                <Editar url={"colmeia/editar"} urlGet={`colmeia?id=${dado.id}`} />
+                                                <Editar generos={generos} status={status} url={"colmeia/editar"} urlGet={`colmeia?id=${dado.id}`} />
                                                 <Excluir url={`colmeia/excluir?id=${dado.id}`} titulo={"Excluir colmeia"} />
                                             </td>
                                         </tr>
