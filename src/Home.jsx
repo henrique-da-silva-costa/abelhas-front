@@ -1,13 +1,27 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Button, Offcanvas, OffcanvasBody, OffcanvasHeader } from 'reactstrap'
 import Abelhas from './paginas/Abelhas';
 import Divisoes from './paginas/Divisoes';
 import { Usuario } from './contexts/Usuario';
+import axios from 'axios';
 
 const Home = () => {
     const [isOpen, setIsOpen] = useState(false);
     const [componente, setComponente] = useState(<Abelhas />);
     const { setAuth } = useContext(Usuario);
+
+
+    useEffect(() => {
+        axios.get("http://localhost:8000/token", { withCredentials: true })
+            .then(response => {
+                localStorage.setItem("token", response.data.token);
+            })
+            .catch(error => {
+                console.error(error);
+            });
+    }, []);
+
+
 
     const linkPagina = (valor) => {
         setIsOpen(false);

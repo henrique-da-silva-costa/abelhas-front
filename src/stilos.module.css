@@ -2,6 +2,10 @@
   text-transform: capitalize;
 }
 
+.sucesso {
+  color: green;
+}
+
 .erro {
   color: red;
 }

@@ -10,14 +10,6 @@ function App() {
   const usuarioEmail = sessionStorage.getItem("usuario") ? JSON.parse(sessionStorage.getItem("usuario")).email : "";
 
   useEffect(() => {
-    axios.get("http://localhost:8000/token", { withCredentials: true })
-      .then(response => {
-        localStorage.setItem("token", response.data.token);
-      })
-      .catch(error => {
-        console.error(error);
-      });
-
     axios.get("http://localhost:8000/verificaremailapp", {
       withCredentials: true,
       params: { email: usuarioEmail }
@@ -26,10 +18,12 @@ function App() {
         if (res.data.erro) {
           setAuth(false);
         }
+
+        setAuth(true);
       })
       .catch(err => {
         if (err) {
-          alert("algo deu errado. Por favor contate o suporte");
+          // alert("algo deu errado. Por favor contate o suporte");
           setAuth(false);
         }
       });

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Button, Container, Table } from 'reactstrap'
+import { Badge, Button, Container, Table } from 'reactstrap'
 import Cadastrar from '../crud/Cadastrar'
 import axios from 'axios';
 import styles from "../stilos.module.css"
@@ -80,18 +80,15 @@ const Abelhas = () => {
     return (
         <Container className="mt-3">
             <div className="text-end">
-                <Cadastrar generos={generos} status={status} inputs={inputs} url={"colmeia/cadastrar"} />
+                <Cadastrar pegarDadosCarregar={pegarDados} generos={generos} status={status} inputs={inputs} url={"colmeia/cadastrar"} />
             </div>
             <div className="row">
                 {dados.length > 0 ?
                     <Table responsive size="sm" striped>
                         <thead>
                             <tr>
-                                <th>Nome</th>
-                                <th>Telefone</th>
-                                <th>Cidade/Estado</th>
-                                <th>Bairro/Rua</th>
-                                <th>Numero</th>
+                                <th>NOME</th>
+                                <th>STATUS</th>
                                 <th></th>
                             </tr>
                         </thead>
@@ -103,8 +100,13 @@ const Abelhas = () => {
                                             <td>
                                                 <p>{dado.nome}</p>
                                             </td>
+                                            <td>
+                                                <Badge color={dado.status_id == 2 ? "success" : "secondary"}>
+                                                    {dado.status_id == 2 ? "MATRIZ" : "DIVISÃO"}
+                                                </Badge>
+                                            </td>
                                             <td className="align-items-center d-flex gap-2 justify-content-center">
-                                                <Editar generos={generos} status={status} url={"colmeia/editar"} urlGet={`colmeia?id=${dado.id}`} />
+                                                <Editar pegarDadosCarregar={pegarDados} generos={generos} status={status} url={"colmeia/editar"} urlGet={`colmeia?id=${dado.id}`} />
                                                 <Excluir url={`colmeia/excluir?id=${dado.id}`} titulo={"Excluir colmeia"} />
                                             </td>
                                         </tr>

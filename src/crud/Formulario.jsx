@@ -25,39 +25,44 @@ const Formulario = ({ inputs = {}, url, textoBotao, tipoformulario }) => {
     const enviar = (e) => {
         e.preventDefault();
         setMsg("");
-        axios.post(`http://localhost:8000/${url}`, formulario, {
-            withCredentials: true,
-            headers: {
-                "X-CSRF-TOKEN": localStorage.getItem("token")
-            }
-        }).then(res => {
-            if (res.data.erro) {
-                setMsg(res.data.msg)
-            }
+        axios.get("http://localhost:8000/token", { withCredentials: true })
+            .then(response => {
+                axios.post(`http://localhost:8000/${url}`, formulario, {
+                    withCredentials: true,
+                    headers: {
+                        "X-CSRF-TOKEN": response.data.token
+                    }
+                }).then(res => {
+                    if (res.data.erro) {
+                        setMsg(res.data.msg)
+                    }
 
-            if (!res.data.erro && tipoformulario === "login") {
-                console.log(res.data.usuario);
+                    if (!res.data.erro && tipoformulario === "login") {
 
-                sessionStorage.setItem("usuario", JSON.stringify(res.data.usuario));
-                setAuth(true);
-            }
+                        sessionStorage.setItem("usuario", JSON.stringify(res.data.usuario));
+                        setAuth(true);
+                    }
 
-            if (!res.data.erro && tipoformulario === "cadastroUsuario") {
-                nav("/");
-            }
+                    if (!res.data.erro && tipoformulario === "cadastroUsuario") {
+                        nav("/");
+                    }
 
-            if (!res.data.erro && tipoformulario === "verificarEmail") {
-                localStorage.setItem("email", formulario.email);
-                nav("/recuperarsenha");
-            }
+                    if (!res.data.erro && tipoformulario === "verificarEmail") {
+                        localStorage.setItem("email", formulario.email);
+                        nav("/recuperarsenha");
+                    }
 
-            if (!res.data.erro && tipoformulario === "recuperarSenha") {
-                nav("/");
-            }
+                    if (!res.data.erro && tipoformulario === "recuperarSenha") {
+                        nav("/");
+                    }
 
-        }).catch(error => {
-            console.error(error.response.data);
-        });
+                }).catch(error => {
+                    console.error(error.response.data);
+                });
+            })
+            .catch(error => {
+                console.error(error);
+            });
     }
 
     const tipoInput = (tipo) => {

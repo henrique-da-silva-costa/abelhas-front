@@ -3,21 +3,20 @@ import { Button, FormGroup, Input, Label, Modal, ModalBody, ModalFooter, ModalHe
 import styles from "../stilos.module.css"
 import axios from 'axios';
 
-const Editar = ({ inputs = {}, url, urlGet, generos = [], status = [] }) => {
+const Editar = ({ inputs = {}, pegarDadosCarregar = () => { }, url, urlGet, generos = [], status = [] }) => {
     const usuarioId = sessionStorage.getItem("usuario") ? JSON.parse(sessionStorage.getItem("usuario")).id : "";
     const [formulario, setformularuio] = useState(inputs);
     const [erro, setErro] = useState({});
     const [msg, setMsg] = useState("");
     const [desabilitar, setDesabilitar] = useState(false);
-    // const [desabilitarEspecie, setDesabilitarEspecie] = useState(true);
+    const [msgCor, setMsgCor] = useState("");
     const [especies, setEspecies] = useState([]);
     const [textoBotaoCarregando, setTextoBotaoCarregando] = useState("EDITAR");
+    const [temMatriz, setTemMatriz] = useState(false);
     const [modal, setModal] = useState(false);
 
     const changeformulario = (e) => {
         const { name, value, files } = e.target;
-
-        console.log(formulario)
 
         if (name == "genero_id" && value > 0) {
             axios.get("http://localhost:8000/especies", { params: { genero_id: value } }).then((res) => {
@@ -25,6 +24,12 @@ const Editar = ({ inputs = {}, url, urlGet, generos = [], status = [] }) => {
             }).catch((err) => {
                 console.error(err);
             })
+        }
+
+        if (name == "status_id" && value == 2) {
+            setTemMatriz(true);
+        } else {
+            setTemMatriz(false)
         }
 
         setformularuio({
@@ -48,20 +53,99 @@ const Editar = ({ inputs = {}, url, urlGet, generos = [], status = [] }) => {
     const toggle = () => {
         setModal(!modal)
         pegardados();
+        setMsg("");
     };
 
     const enviar = (e) => {
         e.preventDefault();
-        axios.put(`http://localhost:8000/${url}`, formulario, {
-            withCredentials: true,
-            headers: {
-                "X-CSRF-TOKEN": localStorage.getItem("token")
-            }
-        }).then(res => {
-            console.log(res.data);
-        }).catch(error => {
-            console.error(error.response.data);
-        });
+
+        const msgerros = {};
+
+        setErro(msgerros);
+        setDesabilitar(true);
+        setTextoBotaoCarregando("CAREGANDO...")
+
+        axios.get("http://localhost:8000/token", { withCredentials: true })
+            .then(response => {
+                axios.put(`http://localhost:8000/${url}`, formulario, {
+                    withCredentials: true,
+                    headers: {
+                        "X-CSRF-TOKEN": response.data.token
+                    }
+                }).then(res => {
+                    for (const [key, value] of Object.entries(formulario)) {
+                        if (value != null && value.length == 0) {
+                            msgerros[key] = "Campo obrigatório";
+                        }
+
+                        if (value != null && value.length > 255) {
+                            msgerros[key] = `O campo ${key} dever ter no maximo 255 caracteres`;
+                        }
+
+                        if (res.data.campo) {
+                            msgerros[res.data.campo] = res.data.msg;
+                        }
+
+                        if (res.data.erro) {
+                            setModal(true);
+                            setMsgCor(styles.erro);
+                            setMsg(res.data.msg);
+                            setDesabilitar(false);
+                            setTextoBotaoCarregando("CADASTRAR")
+                        }
+
+                        if (res.data.campo) {
+                            setMsg("");
+                        }
+
+                        setErro(msgerros);
+                    }
+
+                    if (!res.data.erro) {
+                        pegarDadosCarregar();
+                        setMsgCor(styles.sucesso);
+                        setMsg("edicao realizado com sucesso");
+                        setTimeout(() => {
+                            setModal(false)
+                            setDesabilitar(false);
+                        }, 1200);
+                        setTextoBotaoCarregando("EDITAR")
+                    }
+                }).catch(error => {
+                    for (const [key, value] of Object.entries(formulario)) {
+                        if (!error.response) {
+                            // setMsg("Erro interno no servidor, contate o suporte")
+                            setTextoBotaoCarregando("EDITAR");
+                            setDesabilitar(false);
+                            setErro("");
+                            return;
+                        }
+
+                        if (value != null && value.length == 0) {
+                            msgerros[key] = "Campo obrigatório";
+                        }
+
+                        else if (key === "email" && !/\S+@\S+\.\S+/.test(value)) {
+                            msgerros[key] = "O e-mail deve ser válido.";
+                        }
+
+
+                        setErro(msgerros);
+                    }
+
+                    if (!error.response) {
+                        setMsg("Erro interno no servidor, contate o suporte")
+                        setErro("");
+                    }
+
+                    setTextoBotaoCarregando("CADASTRAR");
+                    setDesabilitar(false);
+                    setModal(true);
+                });
+            })
+            .catch(error => {
+                console.log(error.response.data);
+            });
     }
 
     const tipoValorInput = (tipo) => {
@@ -84,6 +168,17 @@ const Editar = ({ inputs = {}, url, urlGet, generos = [], status = [] }) => {
         return tipo;
     }
 
+    const inputInvisivel = (tipo) => {
+        if (tipo === "doadora_id" || tipo === "doadora_id2" || tipo === "tipo_divisao_id") {
+            if (!temMatriz) {
+                return ""
+            }
+
+            return "d-none"
+        }
+    }
+
+
     const tipoInput = (tipo) => {
         if (tipo == "genero_id") {
             return <>
@@ -97,7 +192,6 @@ const Editar = ({ inputs = {}, url, urlGet, generos = [], status = [] }) => {
                         }) : ""
                     }
                 </select>
-                <p className={styles.erro}>{erro[tipo]}</p>
             </>
         }
 
@@ -113,7 +207,6 @@ const Editar = ({ inputs = {}, url, urlGet, generos = [], status = [] }) => {
                         }) : ""
                     }
                 </select>
-                <p className={styles.erro}>{erro[tipo]}</p>
             </>
         }
 
@@ -129,7 +222,6 @@ const Editar = ({ inputs = {}, url, urlGet, generos = [], status = [] }) => {
                         }) : ""
                     }
                 </select>
-                <p className={styles.erro}>{erro[tipo]}</p>
             </>
         }
 
@@ -148,7 +240,7 @@ const Editar = ({ inputs = {}, url, urlGet, generos = [], status = [] }) => {
                         <FormGroup>
                             {formulario ? Object.keys(formulario).map((valor, index) => {
                                 return (
-                                    <div key={index}>
+                                    <div key={index} className={inputInvisivel(valor)}>
                                         <div className="">
                                             <Label htmlFor={valor} className={styles.labels}>{tipoLabel(valor)}</Label>
                                             {tipoInput(valor)}
