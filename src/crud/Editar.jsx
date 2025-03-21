@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Button, FormGroup, Input, Label, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 import styles from "../stilos.module.css"
 import axios from 'axios';
+import { MdEdit } from 'react-icons/md';
 
 const Editar = ({ inputs = {}, pegarDadosCarregar = () => { }, url, urlGet, generos = [], status = [] }) => {
     const usuarioId = sessionStorage.getItem("usuario") ? JSON.parse(sessionStorage.getItem("usuario")).id : "";
@@ -40,6 +41,14 @@ const Editar = ({ inputs = {}, pegarDadosCarregar = () => { }, url, urlGet, gene
     const pegardados = () => {
         axios.get(`http://localhost:8000/${urlGet}`).then((res) => {
             setformularuio(res.data)
+            console.log(res.data);
+
+            if (res.data.status_id == 2) {
+                setTemMatriz(true);
+            } else {
+                setTemMatriz(false)
+            }
+
             axios.get("http://localhost:8000/especies", { params: { genero_id: res.data.genero_id } }).then((res) => {
                 setEspecies(res.data)
             }).catch((err) => {
@@ -86,12 +95,16 @@ const Editar = ({ inputs = {}, pegarDadosCarregar = () => { }, url, urlGet, gene
                             msgerros[res.data.campo] = res.data.msg;
                         }
 
+                        if (res.data.campo == "status_id") {
+                            msgerros["status_id"] = res.data.msg;
+                        }
+
                         if (res.data.erro) {
                             setModal(true);
                             setMsgCor(styles.erro);
                             setMsg(res.data.msg);
                             setDesabilitar(false);
-                            setTextoBotaoCarregando("CADASTRAR")
+                            setTextoBotaoCarregando("EDITAR")
                         }
 
                         if (res.data.campo) {
@@ -112,6 +125,8 @@ const Editar = ({ inputs = {}, pegarDadosCarregar = () => { }, url, urlGet, gene
                         setTextoBotaoCarregando("EDITAR")
                     }
                 }).catch(error => {
+
+
                     for (const [key, value] of Object.entries(formulario)) {
                         if (!error.response) {
                             // setMsg("Erro interno no servidor, contate o suporte")
@@ -119,6 +134,10 @@ const Editar = ({ inputs = {}, pegarDadosCarregar = () => { }, url, urlGet, gene
                             setDesabilitar(false);
                             setErro("");
                             return;
+                        }
+
+                        if (res.data.campo) {
+                            msgerros[res.data.campo] = res.data.msg;
                         }
 
                         if (value != null && value.length == 0) {
@@ -138,7 +157,7 @@ const Editar = ({ inputs = {}, pegarDadosCarregar = () => { }, url, urlGet, gene
                         setErro("");
                     }
 
-                    setTextoBotaoCarregando("CADASTRAR");
+                    setTextoBotaoCarregando("EDITAR");
                     setDesabilitar(false);
                     setModal(true);
                 });
@@ -158,11 +177,19 @@ const Editar = ({ inputs = {}, pegarDadosCarregar = () => { }, url, urlGet, gene
         if (tipo == "usuario_id") {
             return "hidden";
         }
+
+        if (tipo == "id") {
+            return "hidden";
+        }
     }
 
     const tipoLabel = (tipo) => {
         if (tipo == "usuario_id") {
             return ""
+        }
+
+        if (tipo == "id") {
+            return "";
         }
 
         return tipo;
@@ -172,6 +199,10 @@ const Editar = ({ inputs = {}, pegarDadosCarregar = () => { }, url, urlGet, gene
         if (tipo === "doadora_id" || tipo === "doadora_id2" || tipo === "tipo_divisao_id") {
             if (!temMatriz) {
                 return ""
+            }
+
+            if (tipo == "id") {
+                return "";
             }
 
             return "d-none"
@@ -230,8 +261,8 @@ const Editar = ({ inputs = {}, pegarDadosCarregar = () => { }, url, urlGet, gene
 
     return (
         <div>
-            <Button color="success" onClick={toggle}>
-                EDITAR
+            <Button color="transparent" className="border border-0" onClick={toggle}>
+                <MdEdit color="blue" fontSize={20} />
             </Button>
             <Modal backdrop="static" isOpen={modal} toggle={toggle}>
                 <ModalHeader toggle={toggle}>EDITAR</ModalHeader>

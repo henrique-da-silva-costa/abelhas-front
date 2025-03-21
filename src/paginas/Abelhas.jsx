@@ -105,9 +105,9 @@ const Abelhas = () => {
                                                     {dado.status_id == 2 ? "MATRIZ" : "DIVISÃO"}
                                                 </Badge>
                                             </td>
-                                            <td className="align-items-center d-flex gap-2 justify-content-center">
+                                            <td className="align-items-center d-flex gap-2 justify-content-end">
                                                 <Editar pegarDadosCarregar={pegarDados} generos={generos} status={status} url={"colmeia/editar"} urlGet={`colmeia?id=${dado.id}`} />
-                                                <Excluir url={`colmeia/excluir?id=${dado.id}`} titulo={"Excluir colmeia"} />
+                                                <Excluir pegarDados={pegarDados} url={`colmeia/excluir?id=${dado.id}`} titulo={"Excluir colmeia"} />
                                             </td>
                                         </tr>
                                     )

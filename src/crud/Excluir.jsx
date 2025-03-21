@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, { useState } from 'react'
 import { Button, Modal, ModalBody, ModalHeader } from 'reactstrap';
 import styles from "../stilos.module.css";
+import { FaTrashCan } from 'react-icons/fa6';
 
 const Excluir = ({ titulo = "EXCLUIR", id = null, url, pegarDados = () => { } }) => {
     const [modal, setModal] = useState(false);
@@ -46,7 +47,9 @@ const Excluir = ({ titulo = "EXCLUIR", id = null, url, pegarDados = () => { } })
 
     return (
         <div>
-            <Button color="danger" onClick={toggle}>EXCLUIR</Button>
+            <Button color="transparent" className="border border-0" onClick={toggle}>
+                <FaTrashCan color="red" fontSize={18} />
+            </Button>
             <Modal backdrop="static" isOpen={modal}>
                 <ModalHeader toggle={toggle}>{titulo}</ModalHeader>
                 <ModalBody className="d-flex gap-2 flex-column justify-content-end">

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Button, FormGroup, Input, Label, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 import styles from "../stilos.module.css"
 import axios from 'axios';
+import { IoAdd } from 'react-icons/io5';
 
 const Cadastrar = ({
     inputs = {},
@@ -19,7 +20,7 @@ const Cadastrar = ({
     const [desabilitarEspecie, setDesabilitarEspecie] = useState(true);
     const [especies, setEspecies] = useState([]);
     const [textoBotaoCarregando, setTextoBotaoCarregando] = useState("CADASTRAR");
-    const [temMatriz, setTemMatriz] = useState(false);
+    const [temMatriz, setTemMatriz] = useState(true);
     const [modal, setModal] = useState(false);
 
     const toggle = () => {
@@ -28,11 +29,6 @@ const Cadastrar = ({
 
     const changeformulario = (e) => {
         const { name, value, files } = e.target;
-
-        // if (!temMatriz && name === "doadora_id" || name === "doadora_id2" || name === "tipo_divisao_id") {
-        //     setDesabilitar(true);
-        //     console.log("akii")
-        // }
 
         if (name == "genero_id" && value > 0) {
             axios.get("http://localhost:8000/especies", { params: { genero_id: value } }).then((res) => {
@@ -245,8 +241,8 @@ const Cadastrar = ({
 
     return (
         <div>
-            <Button color="success" onClick={toggle}>
-                CADASTRAR
+            <Button color="transparent" className="border border-0" onClick={toggle}>
+                <strong className="text-success">CADASTRAR</strong> <IoAdd color="green" fontSize={40} />
             </Button>
             <Modal backdrop="static" isOpen={modal} toggle={toggle}>
                 <ModalHeader toggle={toggle}>CADASTRAR</ModalHeader>
