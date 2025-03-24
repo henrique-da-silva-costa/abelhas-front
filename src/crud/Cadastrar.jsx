@@ -9,6 +9,8 @@ const Cadastrar = ({
     pegarDadosCarregar = () => { },
     url,
     generos = [],
+    colmeiasMatrizes = [],
+    tiposDoacao = [],
     status = []
 }) => {
     const usuarioId = sessionStorage.getItem("usuario") ? JSON.parse(sessionStorage.getItem("usuario")).id : "";
@@ -25,6 +27,7 @@ const Cadastrar = ({
 
     const toggle = () => {
         setModal(!modal)
+        setMsg("");
     };
 
     const changeformulario = (e) => {
@@ -190,6 +193,35 @@ const Cadastrar = ({
     }
 
     const tipoInput = (tipo) => {
+        if (tipo == "colmeia_id") {
+            return <>
+                <select name={tipo} disabled={desabilitar} onChange={changeformulario} className="form-control" value={formulario.genero} >
+                    <option value={""}>Selecione...</option>
+                    {
+                        colmeiasMatrizes.length > 0 ? colmeiasMatrizes.map((colmeiaMatriz, index) => {
+                            return (
+                                <option key={index} value={colmeiaMatriz.id}>{colmeiaMatriz.nome}</option>
+                            )
+                        }) : ""
+                    }
+                </select>
+            </>
+        }
+
+        if (tipo == "tipo_doacao_id") {
+            return <>
+                <select name={tipo} disabled={desabilitar} onChange={changeformulario} className="form-control" value={formulario.genero} >
+                    <option value={""}>Selecione...</option>
+                    {
+                        tiposDoacao.length > 0 ? tiposDoacao.map((tipo, index) => {
+                            return (
+                                <option key={index} value={tipo.id}>{tipo.tipo}</option>
+                            )
+                        }) : ""
+                    }
+                </select>
+            </>
+        }
         if (tipo == "genero_id") {
             return <>
                 <select name={tipo} disabled={desabilitar} onChange={changeformulario} className="form-control" value={formulario.genero} >
