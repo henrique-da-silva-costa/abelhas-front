@@ -73,6 +73,7 @@ const Doadoras = () => {
 
     return (
         <Container className="mt-3">
+            <h1>Doadoras</h1>
             <div className="text-end">
                 <Cadastrar pegarDadosCarregar={pegarDados} colmeiasMatrizes={colmeias} tiposDoacao={tipoDoacao} inputs={inputs} url={"doadora/cadastrar"} />
             </div>
@@ -82,7 +83,7 @@ const Doadoras = () => {
                         <thead>
                             <tr>
                                 <th>NOME</th>
-                                <th>STATUS</th>
+                                <th>DOOU</th>
                                 <th></th>
                             </tr>
                         </thead>
@@ -92,13 +93,16 @@ const Doadoras = () => {
                                     return (
                                         <tr key={i}>
                                             <td>
-                                                <p>{dado.nome}</p>
+                                                <p>{dado.colmeia_nome}</p>
                                             </td>
                                             <td>
+                                                <p>{dado.tipo_doacao_tipo}</p>
+                                            </td>
+                                            {/* <td>
                                                 <Badge color={dado.status_id == 2 ? "success" : "secondary"}>
                                                     {dado.status_id == 2 ? "MATRIZ" : "DIVISÃO"}
                                                 </Badge>
-                                            </td>
+                                            </td> */}
                                             <td className="align-items-center d-flex gap-2 justify-content-end">
                                                 <Editar pegarDadosCarregar={pegarDados} colmeiasMatrizes={colmeias} tiposDoacao={tipoDoacao} url={"doadora/editar"} urlGet={`doadora?id=${dado.id}`} />
                                                 <Excluir pegarDados={pegarDados} url={`doadora/excluir?id=${dado.id}`} titulo={"Excluir colmeia"} />

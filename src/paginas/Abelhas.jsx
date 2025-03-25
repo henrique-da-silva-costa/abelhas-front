@@ -79,6 +79,7 @@ const Abelhas = () => {
 
     return (
         <Container className="mt-3">
+            <h1>Abelhas</h1>
             <div className="text-end">
                 <Cadastrar pegarDadosCarregar={pegarDados} generos={generos} status={status} inputs={inputs} url={"colmeia/cadastrar"} />
             </div>

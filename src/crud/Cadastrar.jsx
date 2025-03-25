@@ -24,6 +24,9 @@ const Cadastrar = ({
     const [textoBotaoCarregando, setTextoBotaoCarregando] = useState("CADASTRAR");
     const [temMatriz, setTemMatriz] = useState(true);
     const [modal, setModal] = useState(false);
+    const [tipoDivisao, setTipoDivisao] = useState([]);
+    const [doadoraDisco, setDoadoraDisco] = useState([]);
+    const [doadoraCampeira, setDoadoraCampeira] = useState([]);
 
     const toggle = () => {
         setModal(!modal)
@@ -37,6 +40,27 @@ const Cadastrar = ({
             axios.get("http://localhost:8000/especies", { params: { genero_id: value } }).then((res) => {
                 setEspecies(res.data)
                 setDesabilitarEspecie(false)
+            }).catch((err) => {
+                console.error(err);
+            })
+        } else {
+            axios.get("http://localhost:8000/doadora/campeira").then((res) => {
+                setDoadoraCampeira(res.data)
+                // setDesabilitarEspecie(false)
+            }).catch((err) => {
+                console.error(err);
+            })
+
+            axios.get("http://localhost:8000/doadora/disco").then((res) => {
+                setDoadoraDisco(res.data)
+                // setDesabilitarEspecie(false)
+            }).catch((err) => {
+                console.error(err);
+            })
+
+            axios.get("http://localhost:8000/doadora/tipodivisao").then((res) => {
+                setTipoDivisao(res.data)
+                // setDesabilitarEspecie(false)
             }).catch((err) => {
                 console.error(err);
             })
@@ -193,6 +217,48 @@ const Cadastrar = ({
     }
 
     const tipoInput = (tipo) => {
+        if (tipo == "doadora_id") {
+            return <>
+                <select name={tipo} disabled={desabilitar} onChange={changeformulario} className="form-control" value={formulario.genero} >
+                    <option value={""}>Selecione...</option>
+                    {
+                        doadoraDisco.length > 0 ? doadoraDisco.map((disco, index) => {
+                            return (
+                                <option key={index} value={disco.id}>{disco.colmeia_nome}</option>
+                            )
+                        }) : ""
+                    }
+                </select>
+            </>
+        }
+        if (tipo == "doadora_id2") {
+            return <>
+                <select name={tipo} disabled={desabilitar} onChange={changeformulario} className="form-control" value={formulario.genero} >
+                    <option value={""}>Selecione...</option>
+                    {
+                        doadoraCampeira.length > 0 ? doadoraCampeira.map((campeira, index) => {
+                            return (
+                                <option key={index} value={campeira.id}>{campeira.colmeia_nome}</option>
+                            )
+                        }) : ""
+                    }
+                </select>
+            </>
+        }
+        if (tipo == "tipo_divisao_id") {
+            return <>
+                <select name={tipo} disabled={desabilitar} onChange={changeformulario} className="form-control" value={formulario.genero} >
+                    <option value={""}>Selecione...</option>
+                    {
+                        tipoDivisao.length > 0 ? tipoDivisao.map((tipo, index) => {
+                            return (
+                                <option key={index} value={tipo.id}>{tipo.tipo}</option>
+                            )
+                        }) : ""
+                    }
+                </select>
+            </>
+        }
         if (tipo == "colmeia_id") {
             return <>
                 <select name={tipo} disabled={desabilitar} onChange={changeformulario} className="form-control" value={formulario.genero} >

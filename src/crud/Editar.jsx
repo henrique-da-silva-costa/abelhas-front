@@ -23,6 +23,9 @@ const Editar = ({
     const [textoBotaoCarregando, setTextoBotaoCarregando] = useState("EDITAR");
     const [temMatriz, setTemMatriz] = useState(false);
     const [modal, setModal] = useState(false);
+    const [tipoDivisao, setTipoDivisao] = useState([]);
+    const [doadoraDisco, setDoadoraDisco] = useState([]);
+    const [doadoraCampeira, setDoadoraCampeira] = useState([]);
 
     const changeformulario = (e) => {
         const { name, value, files } = e.target;
@@ -34,6 +37,7 @@ const Editar = ({
                 console.error(err);
             })
         }
+
 
         if (name == "status_id" && value == 2) {
             setTemMatriz(true);
@@ -49,7 +53,27 @@ const Editar = ({
     const pegardados = () => {
         axios.get(`http://localhost:8000/${urlGet}`).then((res) => {
             setformularuio(res.data)
-            console.log(res.data);
+
+            axios.get("http://localhost:8000/doadora/campeira").then((res) => {
+                setDoadoraCampeira(res.data)
+                // setDesabilitarEspecie(false)
+            }).catch((err) => {
+                console.error(err);
+            })
+
+            axios.get("http://localhost:8000/doadora/disco").then((res) => {
+                setDoadoraDisco(res.data)
+                // setDesabilitarEspecie(false)
+            }).catch((err) => {
+                console.error(err);
+            })
+
+            axios.get("http://localhost:8000/doadora/tipodivisao").then((res) => {
+                setTipoDivisao(res.data)
+                // setDesabilitarEspecie(false)
+            }).catch((err) => {
+                console.error(err);
+            })
 
             if (res.data.status_id == 2) {
                 setTemMatriz(true);
@@ -219,6 +243,48 @@ const Editar = ({
 
 
     const tipoInput = (tipo) => {
+        if (tipo == "doadora_id") {
+            return <>
+                <select name={tipo} disabled={desabilitar} onChange={changeformulario} className="form-control" defaultValue={formulario[tipo]} value={formulario.doadora_id} >
+                    <option value={""}>Selecione...</option>
+                    {
+                        doadoraDisco.length > 0 ? doadoraDisco.map((disco, index) => {
+                            return (
+                                <option key={index} value={disco.id}>{disco.colmeia_nome}</option>
+                            )
+                        }) : ""
+                    }
+                </select>
+            </>
+        }
+        if (tipo == "doadora_id2") {
+            return <>
+                <select name={tipo} disabled={desabilitar} onChange={changeformulario} className="form-control" defaultValue={formulario[tipo]} value={formulario.doadora_id2} >
+                    <option value={""}>Selecione...</option>
+                    {
+                        doadoraCampeira.length > 0 ? doadoraCampeira.map((campeira, index) => {
+                            return (
+                                <option key={index} value={campeira.id}>{campeira.colmeia_nome}</option>
+                            )
+                        }) : ""
+                    }
+                </select>
+            </>
+        }
+        if (tipo == "tipo_divisao_id") {
+            return <>
+                <select name={tipo} disabled={desabilitar} onChange={changeformulario} className="form-control" defaultValue={formulario[tipo]} value={formulario.tipo_divisao_id} >
+                    <option value={""}>Selecione...</option>
+                    {
+                        tipoDivisao.length > 0 ? tipoDivisao.map((tipo, index) => {
+                            return (
+                                <option key={index} value={tipo.id}>{tipo.tipo}</option>
+                            )
+                        }) : ""
+                    }
+                </select>
+            </>
+        }
         if (tipo == "colmeia_id") {
             return <>
                 <select name={tipo} disabled={desabilitar} onChange={changeformulario} className="form-control" defaultValue={formulario[tipo]} value={formulario.genero} >
