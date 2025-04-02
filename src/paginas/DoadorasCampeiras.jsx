@@ -7,8 +7,7 @@ import Carregando from '../Carregando';
 import Editar from '../crud/Editar';
 import Excluir from '../crud/Excluir';
 
-const Doadoras = () => {
-
+const DoadorasCampeiras = () => {
     const usuarioId = sessionStorage.getItem("usuario") ? JSON.parse(sessionStorage.getItem("usuario")).id : "";
     const [dados, setDados] = useState([]);
     const [msg, setMsg] = useState("");
@@ -21,18 +20,24 @@ const Doadoras = () => {
 
     const pegarDados = (page) => {
         setBotaoDesabilitado(true)
-        axios.get("http://127.0.0.1:8000/doadoras", {
+        axios.get("http://127.0.0.1:8000/doadoras/campeira", {
             withCredentials: true,
             params: {
                 "usuario_id": usuarioId,
                 "page": page
             }
         }).then((res) => {
-            setDados(res.data.data);
-            setPaginaAtual(res.data.current_page);
-            setTotalPages(res.data.last_page);
-            setBotaoDesabilitado(false);
-            setRemoverLoading(true);
+            if (res.data.length == 0) {
+                setDados([]);
+            } else {
+                setDados(res.data.data);
+                setPaginaAtual(res.data.current_page);
+                setTotalPages(res.data.last_page);
+                setBotaoDesabilitado(false);
+                setRemoverLoading(true);
+            }
+
+            console.log(dados.length);
         }).catch((err) => {
             setMsg("erro interno servidor, entre em  contato com o suporte");
             setBotaoDesabilitado(false);
@@ -47,7 +52,7 @@ const Doadoras = () => {
             console.error(err);
         })
 
-        axios.get("http://localhost:8000/doadora/tipodoacao").then((res) => {
+        axios.get("http://localhost:8000/doadora/tipodoacao/campeira").then((res) => {
             setTipoDoacao(res.data)
             console.log(res.data)
         }).catch((err) => {
@@ -73,9 +78,9 @@ const Doadoras = () => {
 
     return (
         <Container className="mt-3">
-            <h1>Doadoras</h1>
+            <h1>Doadoras de Campeira</h1>
             <div className="text-end">
-                <Cadastrar pegarDadosCarregar={pegarDados} colmeiasMatrizes={colmeias} tiposDoacao={tipoDoacao} inputs={inputs} url={"doadora/cadastrar"} />
+                <Cadastrar pegarDadosCarregar={pegarDados} colmeiasMatrizes={colmeias} tiposDoacao={tipoDoacao} inputs={inputs} url={"doadora/cadastrar/campeira"} />
             </div>
             <div className="row">
                 {dados.length > 0 ?
@@ -104,8 +109,8 @@ const Doadoras = () => {
                                                 </Badge>
                                             </td> */}
                                             <td className="align-items-center d-flex gap-2 justify-content-end">
-                                                <Editar pegarDadosCarregar={pegarDados} colmeiasMatrizes={colmeias} tiposDoacao={tipoDoacao} url={"doadora/editar"} urlGet={`doadora?id=${dado.id}`} />
-                                                <Excluir pegarDados={pegarDados} url={`doadora/excluir?id=${dado.id}`} titulo={"Excluir colmeia"} />
+                                                <Editar pegarDadosCarregar={pegarDados} colmeiasMatrizes={colmeias} tiposDoacao={tipoDoacao} url={"doadora/editar/campeira"} urlGet={`doadora?id=${dado.id}`} />
+                                                <Excluir pegarDados={pegarDados} url={`doadora/excluir/campeira?id=${dado.id}`} titulo={"Excluir colmeia"} />
                                             </td>
                                         </tr>
                                     )
@@ -153,4 +158,4 @@ const Doadoras = () => {
     )
 }
 
-export default Doadoras
+export default DoadorasCampeiras

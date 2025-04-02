@@ -58,9 +58,8 @@ const Cadastrar = ({
                 console.error(err);
             })
 
-            axios.get("http://localhost:8000/doadora/tipodivisao").then((res) => {
+            axios.get("http://localhost:8000/colmeias/tipodivisoes").then((res) => {
                 setTipoDivisao(res.data)
-                // setDesabilitarEspecie(false)
             }).catch((err) => {
                 console.error(err);
             })

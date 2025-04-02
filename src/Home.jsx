@@ -4,7 +4,8 @@ import Abelhas from './paginas/Abelhas';
 import Divisoes from './paginas/Divisoes';
 import { Usuario } from './contexts/Usuario';
 import axios from 'axios';
-import Doadoras from './paginas/Doadoras';
+import DoadorasCampeiras from './paginas/DoadorasCampeiras';
+import DoadorasDiscos from './paginas/DoadorasDiscos';
 
 const Home = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -43,7 +44,8 @@ const Home = () => {
                         <div className="d-flex flex-column gap-2 justify-content-end align-items-start">
                             <Button onClick={() => linkPagina(<Abelhas />)}>Abelhas</Button>
                             <Button onClick={() => linkPagina(<Divisoes />)}>Divisoes</Button>
-                            <Button onClick={() => linkPagina(<Doadoras />)}>Doadoras</Button>
+                            <Button onClick={() => linkPagina(<DoadorasCampeiras />)}>Doadoras Campeiras</Button>
+                            <Button onClick={() => linkPagina(<DoadorasDiscos />)}>Doadoras Discos</Button>
                             <Button color="danger" onClick={() => setAuth(false)}>SAIR</Button>
                         </div>
                     </OffcanvasBody>
