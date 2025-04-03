@@ -71,9 +71,9 @@ const Abelhas = () => {
         genero_id: "",
         especie_id: "",
         status_id: "",
-        doadora_id: "",
+        doadora_disco_id: "",
         tipo_divisao_id: "",
-        doadora_id2: "",
+        doadora_campeira_id: "",
         usuario_id: usuarioId
     }
 

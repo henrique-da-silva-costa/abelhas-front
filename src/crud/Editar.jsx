@@ -54,21 +54,21 @@ const Editar = ({
         axios.get(`http://localhost:8000/${urlGet}`).then((res) => {
             setformularuio(res.data)
 
-            axios.get("http://localhost:8000/doadora/campeira").then((res) => {
+            axios.get("http://localhost:8000/doadoras/campeira").then((res) => {
                 setDoadoraCampeira(res.data)
                 // setDesabilitarEspecie(false)
             }).catch((err) => {
                 console.error(err);
             })
 
-            axios.get("http://localhost:8000/doadora/disco").then((res) => {
+            axios.get("http://localhost:8000/doadoras/disco").then((res) => {
                 setDoadoraDisco(res.data)
                 // setDesabilitarEspecie(false)
             }).catch((err) => {
                 console.error(err);
             })
 
-            axios.get("http://localhost:8000/doadora/tipodivisao").then((res) => {
+            axios.get("http://localhost:8000/colmeias/tipodivisoes").then((res) => {
                 setTipoDivisao(res.data)
                 // setDesabilitarEspecie(false)
             }).catch((err) => {
@@ -213,6 +213,10 @@ const Editar = ({
         if (tipo == "id") {
             return "hidden";
         }
+
+        if (tipo == "tipo_doacao_id") {
+            return "hidden";
+        }
     }
 
     const tipoLabel = (tipo) => {
@@ -224,11 +228,19 @@ const Editar = ({
             return "";
         }
 
+        if (tipo == "tipo_doacao_id") {
+            return "";
+        }
+
         return tipo;
     }
 
     const inputInvisivel = (tipo) => {
-        if (tipo === "doadora_id" || tipo === "doadora_id2" || tipo === "tipo_divisao_id") {
+        if (tipo == "tipo_doacao_id") {
+            return "d-none";
+        }
+
+        if (tipo === "doadora_disco_id" || tipo === "doadora_campeira_id" || tipo === "tipo_divisao_id") {
             if (!temMatriz) {
                 return ""
             }
@@ -243,7 +255,7 @@ const Editar = ({
 
 
     const tipoInput = (tipo) => {
-        if (tipo == "doadora_id") {
+        if (tipo == "doadora_disco_id") {
             return <>
                 <select name={tipo} disabled={desabilitar} onChange={changeformulario} className="form-control" defaultValue={formulario[tipo]} value={formulario.doadora_id} >
                     <option value={""}>Selecione...</option>
@@ -257,7 +269,7 @@ const Editar = ({
                 </select>
             </>
         }
-        if (tipo == "doadora_id2") {
+        if (tipo == "doadora_campeira_id") {
             return <>
                 <select name={tipo} disabled={desabilitar} onChange={changeformulario} className="form-control" defaultValue={formulario[tipo]} value={formulario.doadora_id2} >
                     <option value={""}>Selecione...</option>
@@ -299,21 +311,20 @@ const Editar = ({
                 </select>
             </>
         }
-
-        if (tipo == "tipo_doacao_id") {
-            return <>
-                <select name={tipo} disabled={desabilitar} onChange={changeformulario} className="form-control" defaultValue={formulario[tipo]} value={formulario.genero} >
-                    <option value={""}>Selecione...</option>
-                    {
-                        tiposDoacao.length > 0 ? tiposDoacao.map((tipo, index) => {
-                            return (
-                                <option key={index} value={tipo.id}>{tipo.tipo}</option>
-                            )
-                        }) : ""
-                    }
-                </select>
-            </>
-        }
+        // if (tipo == "tipo_doacao_id") {
+        //     return <>
+        //         <select name={tipo} disabled={desabilitar} onChange={changeformulario} className="form-control" defaultValue={formulario[tipo]} value={formulario.genero} >
+        //             <option value={""}>Selecione...</option>
+        //             {
+        //                 tiposDoacao.length > 0 ? tiposDoacao.map((tipo, index) => {
+        //                     return (
+        //                         <option key={index} value={tipo.id}>{tipo.tipo}</option>
+        //                     )
+        //                 }) : ""
+        //             }
+        //         </select>
+        //     </>
+        // }
         if (tipo == "genero_id") {
             return <>
                 <select name={tipo} disabled={desabilitar} onChange={changeformulario} className="form-control" defaultValue={formulario[tipo]} value={formulario.genero} >

@@ -16,7 +16,6 @@ const DoadorasDiscos = () => {
     const [totalPages, setTotalPages] = useState(1);
     const [botaoDesabilitado, setBotaoDesabilitado] = useState(false);
     const [colmeias, setColmeias] = useState([]);
-    const [tipoDoacao, setTipoDoacao] = useState([]);
 
     const pegarDados = (page) => {
         setBotaoDesabilitado(true)
@@ -52,13 +51,6 @@ const DoadorasDiscos = () => {
             console.error(err);
         })
 
-        axios.get("http://localhost:8000/doadora/tipodoacao/disco").then((res) => {
-            setTipoDoacao(res.data)
-            console.log(res.data)
-        }).catch((err) => {
-            console.error(err);
-        })
-
         setTimeout(() => {
             pegarDados(paginaAtual);
         }, 1000);
@@ -73,14 +65,14 @@ const DoadorasDiscos = () => {
 
     const inputs = {
         colmeia_id: "",
-        tipo_doacao_id: ""
+        tipo_doacao_id: 1
     }
 
     return (
         <Container className="mt-3">
             <h1>Doadoras de Disco</h1>
             <div className="text-end">
-                <Cadastrar pegarDadosCarregar={pegarDados} colmeiasMatrizes={colmeias} tiposDoacao={tipoDoacao} inputs={inputs} url={"doadora/cadastrar/disco"} />
+                <Cadastrar pegarDadosCarregar={pegarDados} colmeiasMatrizes={colmeias} inputs={inputs} url={"doadora/cadastrar/disco"} />
             </div>
             <div className="row">
                 {dados.length > 0 ?
@@ -109,7 +101,7 @@ const DoadorasDiscos = () => {
                                                 </Badge>
                                             </td> */}
                                             <td className="align-items-center d-flex gap-2 justify-content-end">
-                                                <Editar pegarDadosCarregar={pegarDados} colmeiasMatrizes={colmeias} tiposDoacao={tipoDoacao} url={"doadora/editar/disco"} urlGet={`doadora?id=${dado.id}`} />
+                                                <Editar pegarDadosCarregar={pegarDados} colmeiasMatrizes={colmeias} url={"doadora/editar/disco"} urlGet={`doadora?id=${dado.id}`} />
                                                 <Excluir pegarDados={pegarDados} url={`doadora/excluir/disco?id=${dado.id}`} titulo={"Excluir colmeia"} />
                                             </td>
                                         </tr>

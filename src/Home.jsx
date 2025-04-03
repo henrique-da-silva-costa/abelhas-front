@@ -42,10 +42,10 @@ const Home = () => {
                     </OffcanvasHeader>
                     <OffcanvasBody>
                         <div className="d-flex flex-column gap-2 justify-content-end align-items-start">
-                            <Button onClick={() => linkPagina(<Abelhas />)}>Abelhas</Button>
-                            <Button onClick={() => linkPagina(<Divisoes />)}>Divisoes</Button>
-                            <Button onClick={() => linkPagina(<DoadorasCampeiras />)}>Doadoras Campeiras</Button>
-                            <Button onClick={() => linkPagina(<DoadorasDiscos />)}>Doadoras Discos</Button>
+                            <Button className="w-100" onClick={() => linkPagina(<Abelhas />)}>Abelhas</Button>
+                            <Button className="w-100" onClick={() => linkPagina(<Divisoes />)}>Divisoes</Button>
+                            <Button className="w-100" onClick={() => linkPagina(<DoadorasCampeiras />)}>Doadoras Campeiras</Button>
+                            <Button className="w-100" onClick={() => linkPagina(<DoadorasDiscos />)}>Doadoras Discos</Button>
                             <Button color="danger" onClick={() => setAuth(false)}>SAIR</Button>
                         </div>
                     </OffcanvasBody>
