@@ -157,11 +157,8 @@ const Editar = ({
                         setTextoBotaoCarregando("EDITAR")
                     }
                 }).catch(error => {
-
-
                     for (const [key, value] of Object.entries(formulario)) {
                         if (!error.response) {
-                            // setMsg("Erro interno no servidor, contate o suporte")
                             setTextoBotaoCarregando("EDITAR");
                             setDesabilitar(false);
                             setErro("");
@@ -311,20 +308,6 @@ const Editar = ({
                 </select>
             </>
         }
-        // if (tipo == "tipo_doacao_id") {
-        //     return <>
-        //         <select name={tipo} disabled={desabilitar} onChange={changeformulario} className="form-control" defaultValue={formulario[tipo]} value={formulario.genero} >
-        //             <option value={""}>Selecione...</option>
-        //             {
-        //                 tiposDoacao.length > 0 ? tiposDoacao.map((tipo, index) => {
-        //                     return (
-        //                         <option key={index} value={tipo.id}>{tipo.tipo}</option>
-        //                     )
-        //                 }) : ""
-        //             }
-        //         </select>
-        //     </>
-        // }
         if (tipo == "genero_id") {
             return <>
                 <select name={tipo} disabled={desabilitar} onChange={changeformulario} className="form-control" defaultValue={formulario[tipo]} value={formulario.genero} >
@@ -376,7 +359,7 @@ const Editar = ({
     return (
         <div>
             <Button color="transparent" className="border border-0" onClick={toggle}>
-                <MdEdit color="blue" fontSize={20} />
+                <MdEdit color="blue" fontSize={28} />
             </Button>
             <Modal backdrop="static" isOpen={modal} toggle={toggle}>
                 <ModalHeader toggle={toggle}>EDITAR</ModalHeader>

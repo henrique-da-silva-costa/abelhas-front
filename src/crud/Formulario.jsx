@@ -9,6 +9,7 @@ const Formulario = ({ inputs = {}, url, textoBotao, tipoformulario }) => {
     const [formulario, setformularuio] = useState(inputs);
     const [erro, setErro] = useState({});
     const [msg, setMsg] = useState("");
+    const [msgCor, setMsgCor] = useState("");
     const [desabilitar, setDesabilitar] = useState(false);
     const [textoBotaoCarregando, setTextoBotaoCarregando] = useState(textoBotao);
     const nav = useNavigate();
@@ -25,6 +26,11 @@ const Formulario = ({ inputs = {}, url, textoBotao, tipoformulario }) => {
     const enviar = (e) => {
         e.preventDefault();
         setMsg("");
+        const msgerros = {};
+
+        setErro(msgerros);
+        setDesabilitar(true);
+        setTextoBotaoCarregando("CAREGANDO...")
         axios.get("http://localhost:8000/token", { withCredentials: true })
             .then(response => {
                 axios.post(`http://localhost:8000/${url}`, formulario, {
@@ -33,31 +39,96 @@ const Formulario = ({ inputs = {}, url, textoBotao, tipoformulario }) => {
                         "X-CSRF-TOKEN": response.data.token
                     }
                 }).then(res => {
-                    if (res.data.erro) {
-                        setMsg(res.data.msg)
+                    for (const [key, value] of Object.entries(formulario)) {
+                        if (value != null && value.length == 0) {
+                            msgerros[key] = "Campo obrigatório";
+                        }
+
+                        if (value != null && value.length > 255) {
+                            msgerros[key] = `O campo ${key} dever ter no maximo 255 caracteres`;
+                        }
+
+                        if (res.data.campo) {
+                            msgerros[res.data.campo] = res.data.msg;
+                        }
+
+                        if (res.data.erro) {
+                            setMsgCor(styles.erro);
+                            setMsg(res.data.msg);
+                            setDesabilitar(false);
+                            setTextoBotaoCarregando(textoBotao)
+                        }
+
+                        if (res.data.campo) {
+                            setMsg("");
+                        }
+
+                        setErro(msgerros);
                     }
 
                     if (!res.data.erro && tipoformulario === "login") {
-
                         sessionStorage.setItem("usuario", JSON.stringify(res.data.usuario));
                         setAuth(true);
                     }
 
                     if (!res.data.erro && tipoformulario === "cadastroUsuario") {
                         nav("/");
+                        setMsgCor(styles.sucesso);
+                        setTimeout(() => {
+                            setDesabilitar(false);
+                        }, 1200);
+                        setTextoBotaoCarregando(textoBotao)
                     }
 
                     if (!res.data.erro && tipoformulario === "verificarEmail") {
                         localStorage.setItem("email", formulario.email);
                         nav("/recuperarsenha");
+                        setMsgCor(styles.sucesso);
+                        setTimeout(() => {
+                            setDesabilitar(false);
+                        }, 1200);
+                        setTextoBotaoCarregando(textoBotao)
                     }
 
                     if (!res.data.erro && tipoformulario === "recuperarSenha") {
                         nav("/");
+                        setMsgCor(styles.sucesso);
+                        setTimeout(() => {
+                            setDesabilitar(false);
+                        }, 1200);
+                        setTextoBotaoCarregando(textoBotao)
+                    }
+                }).catch(error => {
+                    console.error(error);
+
+                    for (const [key, value] of Object.entries(formulario)) {
+                        if (!error.response) {
+                            setMsg("Erro interno no servidor, contate o suporte")
+                            setTextoBotaoCarregando(textoBotao);
+                            setDesabilitar(false);
+                            setErro("");
+                            return;
+                        }
+
+                        if (value != null && value.length == 0) {
+                            msgerros[key] = "Campo obrigatório";
+                        }
+
+                        else if (key === "email" && !/\S+@\S+\.\S+/.test(value)) {
+                            msgerros[key] = "O e-mail deve ser válido.";
+                        }
+
+
+                        setErro(msgerros);
                     }
 
-                }).catch(error => {
-                    console.error(error.response.data);
+                    if (!error.response) {
+                        setMsg("Erro interno no servidor, contate o suporte")
+                        setErro("");
+                    }
+
+                    setTextoBotaoCarregando(textoBotao);
+                    setDesabilitar(false);
                 });
             })
             .catch(error => {
@@ -110,7 +181,7 @@ const Formulario = ({ inputs = {}, url, textoBotao, tipoformulario }) => {
                         )
                     }) : ""}
                 </FormGroup>
-                <span className={styles.erro}>{msg}</span>
+                <span className={msgCor}>{msg}</span>
                 <div className="d-flex gap-2 justify-content-end">
                     <Button color="success" disabled={desabilitar}>{textoBotaoCarregando}</Button>
                 </div>

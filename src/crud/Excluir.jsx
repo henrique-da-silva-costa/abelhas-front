@@ -7,11 +7,13 @@ import { FaTrashCan } from 'react-icons/fa6';
 const Excluir = ({ titulo = "EXCLUIR", id = null, url, pegarDados = () => { } }) => {
     const [modal, setModal] = useState(false);
     const [msg, setMsg] = useState("");
+    const [msgCor, setMsgCor] = useState("");
     const [botaoDesabilitar, setBotaoDesabilitar] = useState(false);
     const [botaoMsg, setBotaoMsg] = useState("EXCLUIR");
 
     const toggle = () => {
         setModal(!modal);
+        setMsg("");
     };
 
     const excluir = () => {
@@ -26,14 +28,19 @@ const Excluir = ({ titulo = "EXCLUIR", id = null, url, pegarDados = () => { } })
         }).then((res) => {
             if (res.data.error) {
                 setMsg(res.data.msg);
+                setMsgCor(styles.erro);
                 setBotaoDesabilitar(false);
                 setBotaoMsg("EXCLUIR");
                 return;
             }
 
-            setModal(false);
             pegarDados();
-            setBotaoDesabilitar(false);
+            setMsg(res.data.msg);
+            setMsgCor(styles.sucesso);
+            setTimeout(() => {
+                setModal(false);
+                setBotaoDesabilitar(false);
+            }, 1200);
             setBotaoMsg("EXCLUIR");
         }).catch((err) => {
             setModal(true);
@@ -48,7 +55,7 @@ const Excluir = ({ titulo = "EXCLUIR", id = null, url, pegarDados = () => { } })
     return (
         <div>
             <Button color="transparent" className="border border-0" onClick={toggle}>
-                <FaTrashCan color="red" fontSize={18} />
+                <FaTrashCan color="red" fontSize={22} />
             </Button>
             <Modal backdrop="static" isOpen={modal}>
                 <ModalHeader toggle={toggle}>{titulo}</ModalHeader>
@@ -60,7 +67,7 @@ const Excluir = ({ titulo = "EXCLUIR", id = null, url, pegarDados = () => { } })
                         <Button color="danger" disabled={botaoDesabilitar} onClick={excluir}>{botaoMsg}</Button>
                     </div>
                     <div className="text-end">
-                        <p className={styles.erro}>{msg}</p>
+                        <p className={msgCor}>{msg}</p>
                     </div>
                 </ModalBody>
             </Modal>

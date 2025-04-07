@@ -3,6 +3,7 @@ import { Button, FormGroup, Input, Label, Modal, ModalBody, ModalFooter, ModalHe
 import styles from "../stilos.module.css"
 import axios from 'axios';
 import { IoAdd } from 'react-icons/io5';
+import { inputInvisivel, tipoLabel } from './validacoesFormulario';
 
 const Cadastrar = ({
     inputs = {},
@@ -192,40 +193,6 @@ const Cadastrar = ({
         }
     }
 
-    const tipoLabel = (tipo) => {
-        if (tipo == "usuario_id") {
-            return ""
-        }
-
-        if (tipo === "doadora_disco_id" || tipo === "doadora_campeira_id" || tipo === "tipo_divisao_id") {
-            if (!temMatriz) {
-                return tipo
-            }
-
-            return ""
-        }
-
-        if (tipo == "tipo_doacao_id") {
-            return "";
-        }
-
-        return tipo;
-    }
-
-    const inputInvisivel = (tipo) => {
-        if (tipo === "doadora_disco_id" || tipo === "doadora_campeira_id" || tipo === "tipo_divisao_id") {
-            if (!temMatriz) {
-                return ""
-            }
-
-            return "d-none"
-        }
-
-        if (tipo == "tipo_doacao_id") {
-            return "d-none"
-        }
-    }
-
     const tipoInput = (tipo) => {
         if (tipo == "doadora_disco_id") {
             return <>
@@ -284,21 +251,6 @@ const Cadastrar = ({
                 </select>
             </>
         }
-
-        // if (tipo == "tipo_doacao_id") {
-        //     return <>
-        //         <select name={tipo} disabled={desabilitar} onChange={changeformulario} className="form-control" value={formulario.genero} >
-        //             <option value={""}>Selecione...</option>
-        //             {
-        //                 tiposDoacao.length > 0 ? tiposDoacao.map((tipo, index) => {
-        //                     return (
-        //                         <option key={index} value={tipo.id}>{tipo.tipo}</option>
-        //                     )
-        //                 }) : ""
-        //             }
-        //         </select>
-        //     </>
-        // }
         if (tipo == "genero_id") {
             return <>
                 <select name={tipo} disabled={desabilitar} onChange={changeformulario} className="form-control" value={formulario.genero} >
@@ -370,7 +322,7 @@ const Cadastrar = ({
                                 )
                             }) : ""}
                         </FormGroup>
-                        <span className={styles.erro}>{msg}</span>
+                        <span className={msgCor}>{msg}</span>
                         <div className="d-flex gap-2 justify-content-end">
                             <Button color="danger" disabled={desabilitar} onClick={() => setModal(false)}>FECHAR</Button>
                             <Button color="success" disabled={desabilitar}>{textoBotaoCarregando}</Button>

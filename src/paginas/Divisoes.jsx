@@ -48,7 +48,7 @@ const Divisoes = () => {
 
     return (
         <Container className="mt-3">
-            <h1>Doadoras de Disco</h1>
+            <h1>Divisões</h1>
             <div className="row">
                 {dados.length > 0 ?
                     <Table responsive size="sm" striped>
