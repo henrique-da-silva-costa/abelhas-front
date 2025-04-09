@@ -38,7 +38,6 @@ const Editar = ({
             })
         }
 
-
         if (name == "status_id" && value == 2) {
             setTemMatriz(true);
         } else {
@@ -52,16 +51,18 @@ const Editar = ({
 
     const pegardados = () => {
         axios.get(`http://localhost:8000/${urlGet}`).then((res) => {
+            console.log(res.data)
+
             setformularuio(res.data)
 
-            axios.get("http://localhost:8000/doadoras/campeira").then((res) => {
+            axios.get("http://localhost:8000/doadoras/campeira/select", { params: { usuario_id: usuarioId } }).then((res) => {
                 setDoadoraCampeira(res.data)
                 // setDesabilitarEspecie(false)
             }).catch((err) => {
                 console.error(err);
             })
 
-            axios.get("http://localhost:8000/doadoras/disco").then((res) => {
+            axios.get("http://localhost:8000/doadoras/disco/select", { params: { usuario_id: usuarioId } }).then((res) => {
                 setDoadoraDisco(res.data)
                 // setDesabilitarEspecie(false)
             }).catch((err) => {
@@ -254,7 +255,7 @@ const Editar = ({
     const tipoInput = (tipo) => {
         if (tipo == "doadora_disco_id") {
             return <>
-                <select name={tipo} disabled={desabilitar} onChange={changeformulario} className="form-control" defaultValue={formulario[tipo]} value={formulario.doadora_id} >
+                <select name={tipo} disabled={desabilitar} onChange={changeformulario} className="form-control" defaultValue={formulario[tipo]} value={formulario.doadora_disco_id} >
                     <option value={""}>Selecione...</option>
                     {
                         doadoraDisco.length > 0 ? doadoraDisco.map((disco, index) => {
@@ -268,7 +269,7 @@ const Editar = ({
         }
         if (tipo == "doadora_campeira_id") {
             return <>
-                <select name={tipo} disabled={desabilitar} onChange={changeformulario} className="form-control" defaultValue={formulario[tipo]} value={formulario.doadora_id2} >
+                <select name={tipo} disabled={desabilitar} onChange={changeformulario} className="form-control" defaultValue={formulario[tipo]} value={formulario.doadora_campeira_id} >
                     <option value={""}>Selecione...</option>
                     {
                         doadoraCampeira.length > 0 ? doadoraCampeira.map((campeira, index) => {

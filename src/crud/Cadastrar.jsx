@@ -11,7 +11,8 @@ const Cadastrar = ({
     url,
     generos = [],
     colmeiasMatrizes = [],
-    status = []
+    status = [],
+    nomeFormulario = "",
 }) => {
     const usuarioId = sessionStorage.getItem("usuario") ? JSON.parse(sessionStorage.getItem("usuario")).id : "";
     const [formulario, setformularuio] = useState(inputs);
@@ -44,15 +45,15 @@ const Cadastrar = ({
                 console.error(err);
             })
         } else {
-            axios.get("http://localhost:8000/doadoras/campeira").then((res) => {
-                setDoadoraCampeira(res.data.data)
+            axios.get("http://localhost:8000/doadoras/campeira/select", { params: { usuario_id: usuarioId } }).then((res) => {
+                setDoadoraCampeira(res.data)
                 // setDesabilitarEspecie(false)
             }).catch((err) => {
                 console.error(err);
             })
 
-            axios.get("http://localhost:8000/doadoras/disco").then((res) => {
-                setDoadoraDisco(res.data.data)
+            axios.get("http://localhost:8000/doadoras/disco/select", { params: { usuario_id: usuarioId } }).then((res) => {
+                setDoadoraDisco(res.data)
                 // setDesabilitarEspecie(false)
             }).catch((err) => {
                 console.error(err);
@@ -310,17 +311,17 @@ const Cadastrar = ({
                 <ModalBody>
                     <form onSubmit={enviar}>
                         <FormGroup>
-                            {formulario ? Object.keys(formulario).map((valor, index) => {
-                                return (
-                                    <div key={index} className={inputInvisivel(valor)}>
-                                        <div className="">
-                                            <Label htmlFor={valor} className={styles.labels}>{tipoLabel(valor)}</Label>
+                            <div className="row">
+                                {formulario ? Object.keys(formulario).map((valor, index) => {
+                                    return (
+                                        <div key={index} className={inputInvisivel(valor, temMatriz)}>
+                                            <Label htmlFor={valor} className={styles.labels}>{tipoLabel(valor, temMatriz)}</Label>
                                             {tipoInput(valor)}
                                             <p className={styles.erro}>{erro[valor]}</p>
                                         </div>
-                                    </div>
-                                )
-                            }) : ""}
+                                    )
+                                }) : ""}
+                            </div>
                         </FormGroup>
                         <span className={msgCor}>{msg}</span>
                         <div className="d-flex gap-2 justify-content-end">
