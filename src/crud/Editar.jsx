@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import { Button, FormGroup, Input, Label, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
+import { Button, FormGroup, Input, Label, Modal, ModalBody, ModalHeader } from 'reactstrap';
 import styles from "../stilos.module.css"
 import axios from 'axios';
 import { MdEdit } from 'react-icons/md';
+import { inputInvisivelEDivisaoColunas, tipoLabel } from './validacoesFormulario';
 
 const Editar = ({
     inputs = {},
@@ -12,7 +13,9 @@ const Editar = ({
     colmeiasMatrizes = [],
     tiposDoacao = [],
     generos = [],
-    status = [] }) => {
+    status = [],
+    tamanhoModal = "",
+    formularioNome = "" }) => {
     const usuarioId = sessionStorage.getItem("usuario") ? JSON.parse(sessionStorage.getItem("usuario")).id : "";
     const [formulario, setformularuio] = useState(inputs);
     const [erro, setErro] = useState({});
@@ -51,8 +54,6 @@ const Editar = ({
 
     const pegardados = () => {
         axios.get(`http://localhost:8000/${urlGet}`).then((res) => {
-            console.log(res.data)
-
             setformularuio(res.data)
 
             axios.get("http://localhost:8000/doadoras/campeira/select", { params: { usuario_id: usuarioId } }).then((res) => {
@@ -217,41 +218,6 @@ const Editar = ({
         }
     }
 
-    const tipoLabel = (tipo) => {
-        if (tipo == "usuario_id") {
-            return ""
-        }
-
-        if (tipo == "id") {
-            return "";
-        }
-
-        if (tipo == "tipo_doacao_id") {
-            return "";
-        }
-
-        return tipo;
-    }
-
-    const inputInvisivel = (tipo) => {
-        if (tipo == "tipo_doacao_id") {
-            return "d-none";
-        }
-
-        if (tipo === "doadora_disco_id" || tipo === "doadora_campeira_id" || tipo === "tipo_divisao_id") {
-            if (!temMatriz) {
-                return ""
-            }
-
-            if (tipo == "id") {
-                return "";
-            }
-
-            return "d-none"
-        }
-    }
-
-
     const tipoInput = (tipo) => {
         if (tipo == "doadora_disco_id") {
             return <>
@@ -362,24 +328,24 @@ const Editar = ({
             <Button color="transparent" className="border border-0" onClick={toggle}>
                 <MdEdit color="blue" fontSize={28} />
             </Button>
-            <Modal backdrop="static" isOpen={modal} toggle={toggle}>
+            <Modal backdrop="static" size={tamanhoModal} isOpen={modal} toggle={toggle}>
                 <ModalHeader toggle={toggle}>EDITAR</ModalHeader>
                 <ModalBody>
                     <form onSubmit={enviar}>
                         <FormGroup>
-                            {formulario ? Object.keys(formulario).map((valor, index) => {
-                                return (
-                                    <div key={index} className={inputInvisivel(valor)}>
-                                        <div className="">
+                            <div className="row">
+                                {formulario ? Object.keys(formulario).map((valor, index) => {
+                                    return (
+                                        <div key={index} className={inputInvisivelEDivisaoColunas(valor, temMatriz, formularioNome)}>
                                             <Label htmlFor={valor} className={styles.labels}>{tipoLabel(valor)}</Label>
                                             {tipoInput(valor)}
                                             <p className={styles.erro}>{erro[valor]}</p>
                                         </div>
-                                    </div>
-                                )
-                            }) : ""}
+                                    )
+                                }) : ""}
+                            </div>
                         </FormGroup>
-                        <span className={styles.erro}>{msg}</span>
+                        <span className={msgCor}>{msg}</span>
                         <div className="d-flex gap-2 justify-content-end">
                             <Button color="danger" disabled={desabilitar} onClick={() => setModal(false)}>FECHAR</Button>
                             <Button color="success" disabled={desabilitar}>{textoBotaoCarregando}</Button>

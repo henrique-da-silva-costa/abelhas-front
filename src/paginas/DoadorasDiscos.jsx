@@ -72,7 +72,7 @@ const DoadorasDiscos = () => {
         <Container className="mt-3">
             <h1>Doadoras de Disco</h1>
             <div className="text-end">
-                <Cadastrar pegarDadosCarregar={pegarDados} colmeiasMatrizes={colmeias} inputs={inputs} url={"doadora/cadastrar/disco"} />
+                <Cadastrar formularioNome="doadora" pegarDadosCarregar={pegarDados} colmeiasMatrizes={colmeias} inputs={inputs} url={"doadora/cadastrar/disco"} />
             </div>
             <div className="row">
                 {dados.length > 0 ?
@@ -101,7 +101,7 @@ const DoadorasDiscos = () => {
                                                 </Badge>
                                             </td> */}
                                             <td className="align-items-center d-flex gap-2 justify-content-end">
-                                                <Editar pegarDadosCarregar={pegarDados} colmeiasMatrizes={colmeias} url={"doadora/editar/disco"} urlGet={`doadora?id=${dado.id}`} />
+                                                <Editar formularioNome="doadora" pegarDadosCarregar={pegarDados} colmeiasMatrizes={colmeias} url={"doadora/editar/disco"} urlGet={`doadora?id=${dado.id}`} />
                                                 <Excluir pegarDados={pegarDados} url={`doadora/excluir/disco?id=${dado.id}`} titulo={"Excluir colmeia"} />
                                             </td>
                                         </tr>

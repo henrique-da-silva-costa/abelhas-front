@@ -3,7 +3,7 @@ import { Button, FormGroup, Input, Label, Modal, ModalBody, ModalFooter, ModalHe
 import styles from "../stilos.module.css"
 import axios from 'axios';
 import { IoAdd } from 'react-icons/io5';
-import { inputInvisivel, tipoLabel } from './validacoesFormulario';
+import { inputInvisivelEDivisaoColunas, tipoLabel } from './validacoesFormulario';
 
 const Cadastrar = ({
     inputs = {},
@@ -12,7 +12,8 @@ const Cadastrar = ({
     generos = [],
     colmeiasMatrizes = [],
     status = [],
-    nomeFormulario = "",
+    tamanhoModal = "",
+    formularioNome = ""
 }) => {
     const usuarioId = sessionStorage.getItem("usuario") ? JSON.parse(sessionStorage.getItem("usuario")).id : "";
     const [formulario, setformularuio] = useState(inputs);
@@ -306,7 +307,7 @@ const Cadastrar = ({
             <Button color="transparent" className="border border-0" onClick={toggle}>
                 <strong className="text-success">CADASTRAR</strong> <IoAdd color="green" fontSize={40} />
             </Button>
-            <Modal backdrop="static" isOpen={modal} toggle={toggle}>
+            <Modal backdrop="static" size={tamanhoModal} isOpen={modal} toggle={toggle}>
                 <ModalHeader toggle={toggle}>CADASTRAR</ModalHeader>
                 <ModalBody>
                     <form onSubmit={enviar}>
@@ -314,7 +315,7 @@ const Cadastrar = ({
                             <div className="row">
                                 {formulario ? Object.keys(formulario).map((valor, index) => {
                                     return (
-                                        <div key={index} className={inputInvisivel(valor, temMatriz)}>
+                                        <div key={index} className={inputInvisivelEDivisaoColunas(valor, temMatriz, formularioNome)}>
                                             <Label htmlFor={valor} className={styles.labels}>{tipoLabel(valor, temMatriz)}</Label>
                                             {tipoInput(valor)}
                                             <p className={styles.erro}>{erro[valor]}</p>

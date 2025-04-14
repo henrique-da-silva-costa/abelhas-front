@@ -66,8 +66,6 @@ const Abelhas = () => {
     const inputs = {
         nome: "",
         data_criacao: "",
-        data_alteracao: "",
-        data_divisao: "",
         genero_id: "",
         especie_id: "",
         status_id: "",
@@ -81,7 +79,7 @@ const Abelhas = () => {
         <Container className="mt-3">
             <h1>Abelhas</h1>
             <div className="text-end">
-                <Cadastrar pegarDadosCarregar={pegarDados} generos={generos} status={status} inputs={inputs} url={"colmeia/cadastrar"} />
+                <Cadastrar pegarDadosCarregar={pegarDados} generos={generos} status={status} inputs={inputs} url={"colmeia/cadastrar"} tamanhoModal={"xl"} />
             </div>
             <div className="row">
                 {dados.length > 0 ?
@@ -107,7 +105,7 @@ const Abelhas = () => {
                                                 </Badge>
                                             </td>
                                             <td className="align-items-center d-flex gap-2 justify-content-end">
-                                                <Editar pegarDadosCarregar={pegarDados} generos={generos} status={status} url={"colmeia/editar"} urlGet={`colmeia?id=${dado.id}`} />
+                                                <Editar tamanhoModal={"xl"} pegarDadosCarregar={pegarDados} generos={generos} status={status} url={"colmeia/editar"} urlGet={`colmeia?id=${dado.id}`} />
                                                 <Excluir pegarDados={pegarDados} url={`colmeia/excluir?id=${dado.id}`} titulo={"Excluir colmeia"} />
                                             </td>
                                         </tr>
