@@ -6,6 +6,7 @@ import styles from "../stilos.module.css"
 import Carregando from '../Carregando';
 import Editar from '../crud/Editar';
 import Excluir from '../crud/Excluir';
+import Formulario from '../crud/Formulario';
 
 const Abelhas = () => {
     const usuarioId = sessionStorage.getItem("usuario") ? JSON.parse(sessionStorage.getItem("usuario")).id : "";
@@ -75,9 +76,16 @@ const Abelhas = () => {
         usuario_id: usuarioId
     }
 
+    const inputsFiltros = {
+        especie: "",
+        status: "",
+    }
+
     return (
         <Container className="mt-3">
-            <h1>Abelhas</h1>
+            <div className="d-flex justify-content-space-between">
+                <h1>Abelhas</h1>
+            </div>
             <div className="text-end">
                 <Cadastrar pegarDadosCarregar={pegarDados} generos={generos} status={status} inputs={inputs} url={"colmeia/cadastrar"} tamanhoModal={"xl"} />
             </div>

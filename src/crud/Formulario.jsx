@@ -5,8 +5,8 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { Usuario } from '../contexts/Usuario';
 
-const Formulario = ({ inputs = {}, url, textoBotao, tipoformulario }) => {
-    const [formulario, setformularuio] = useState(inputs);
+const Formulario = ({ inputs = {}, url, textoBotao, tipoformulario, corBotao = "success" }) => {
+    const [formulario, setFormulario] = useState(inputs);
     const [erro, setErro] = useState({});
     const [msg, setMsg] = useState("");
     const [msgCor, setMsgCor] = useState("");
@@ -18,7 +18,7 @@ const Formulario = ({ inputs = {}, url, textoBotao, tipoformulario }) => {
     const changeformulario = (e) => {
         const { name, value, files } = e.target;
 
-        setformularuio({
+        setFormulario({
             ...formulario, [name]: value
         })
     }
@@ -39,6 +39,9 @@ const Formulario = ({ inputs = {}, url, textoBotao, tipoformulario }) => {
                         "X-CSRF-TOKEN": response.data.token
                     }
                 }).then(res => {
+
+                    console.log(res.data);
+
                     for (const [key, value] of Object.entries(formulario)) {
                         if (value != null && value.length == 0) {
                             msgerros[key] = "Campo obrigatório";
@@ -138,6 +141,11 @@ const Formulario = ({ inputs = {}, url, textoBotao, tipoformulario }) => {
 
     const tipoInput = (tipo) => {
         const tiposData = ["data_criacao", "data_alteracao", "data_divisao"];
+        const tiposSenha = ["senha", "novaSenha", "confirmaSenha"];
+
+        if (tiposSenha.includes(tipo)) {
+            return "password";
+        }
 
         if (tipoformulario === "recuperarSenha" && tipo == "email") {
             return "hidden"
@@ -173,7 +181,7 @@ const Formulario = ({ inputs = {}, url, textoBotao, tipoformulario }) => {
                         return (
                             <div key={index}>
                                 <div className="">
-                                    <Label htmlFor={valor} className={styles.labels}>{tipoLabel(valor)}</Label>
+                                    <Label htmlFor={valor} className={styles.labels}><strong>{tipoLabel(valor)}</strong></Label>
                                     <Input placeholder={valor} type={tipoInput(valor)} disabled={desabilitar} name={valor} onChange={changeformulario} />
                                     <p className={styles.erro}>{erro[valor]}</p>
                                 </div>
@@ -183,7 +191,7 @@ const Formulario = ({ inputs = {}, url, textoBotao, tipoformulario }) => {
                 </FormGroup>
                 <span className={msgCor}>{msg}</span>
                 <div className="d-flex gap-2 justify-content-end">
-                    <Button color="success" disabled={desabilitar}>{textoBotaoCarregando}</Button>
+                    <Button color={corBotao} disabled={desabilitar}>{textoBotaoCarregando}</Button>
                 </div>
             </form>
 

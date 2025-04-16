@@ -17,7 +17,7 @@ const Editar = ({
     tamanhoModal = "",
     formularioNome = "" }) => {
     const usuarioId = sessionStorage.getItem("usuario") ? JSON.parse(sessionStorage.getItem("usuario")).id : "";
-    const [formulario, setformularuio] = useState(inputs);
+    const [formulario, setFormulario] = useState(inputs);
     const [erro, setErro] = useState({});
     const [msg, setMsg] = useState("");
     const [desabilitar, setDesabilitar] = useState(false);
@@ -47,14 +47,14 @@ const Editar = ({
             setTemMatriz(false)
         }
 
-        setformularuio({
+        setFormulario({
             ...formulario, [name]: value
         })
     }
 
     const pegardados = () => {
         axios.get(`http://localhost:8000/${urlGet}`).then((res) => {
-            setformularuio(res.data)
+            setFormulario(res.data)
 
             axios.get("http://localhost:8000/doadoras/campeira/select", { params: { usuario_id: usuarioId } }).then((res) => {
                 setDoadoraCampeira(res.data)
@@ -337,7 +337,7 @@ const Editar = ({
                                 {formulario ? Object.keys(formulario).map((valor, index) => {
                                     return (
                                         <div key={index} className={inputInvisivelEDivisaoColunas(valor, temMatriz, formularioNome)}>
-                                            <Label htmlFor={valor} className={styles.labels}>{tipoLabel(valor)}</Label>
+                                            <Label htmlFor={valor} className={styles.labels}><strong>{tipoLabel(valor)}</strong></Label>
                                             {tipoInput(valor)}
                                             <p className={styles.erro}>{erro[valor]}</p>
                                         </div>

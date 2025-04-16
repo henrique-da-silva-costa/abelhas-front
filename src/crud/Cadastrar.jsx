@@ -16,7 +16,7 @@ const Cadastrar = ({
     formularioNome = ""
 }) => {
     const usuarioId = sessionStorage.getItem("usuario") ? JSON.parse(sessionStorage.getItem("usuario")).id : "";
-    const [formulario, setformularuio] = useState(inputs);
+    const [formulario, setFormulario] = useState(inputs);
     const [erro, setErro] = useState({});
     const [msg, setMsg] = useState("");
     const [msgCor, setMsgCor] = useState("");
@@ -33,6 +33,8 @@ const Cadastrar = ({
     const toggle = () => {
         setModal(!modal)
         setMsg("");
+        setFormulario(inputs);
+        setErro({});
     };
 
     const changeformulario = (e) => {
@@ -73,7 +75,7 @@ const Cadastrar = ({
             setTemMatriz(false)
         }
 
-        setformularuio({
+        setFormulario({
             ...formulario, [name]: value
         })
     }
@@ -316,7 +318,7 @@ const Cadastrar = ({
                                 {formulario ? Object.keys(formulario).map((valor, index) => {
                                     return (
                                         <div key={index} className={inputInvisivelEDivisaoColunas(valor, temMatriz, formularioNome)}>
-                                            <Label htmlFor={valor} className={styles.labels}>{tipoLabel(valor, temMatriz)}</Label>
+                                            <Label htmlFor={valor} className={styles.labels}><strong>{tipoLabel(valor, temMatriz)}</strong></Label>
                                             {tipoInput(valor)}
                                             <p className={styles.erro}>{erro[valor]}</p>
                                         </div>

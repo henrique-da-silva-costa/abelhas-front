@@ -3,6 +3,7 @@ import { Container } from 'reactstrap'
 import Formulario from '../crud/Formulario'
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import styles from "../stilos.module.css";
 
 const RecuperarSenha = () => {
 
@@ -22,7 +23,7 @@ const RecuperarSenha = () => {
     }
 
     return (
-        <Container>
+        <Container className={styles.formularioContainer}>
             <h1 className="text-center">Recuperar senha</h1>
             <Formulario inputs={inputs} textoBotao={"RECUPERAR SENHA"} url={"recuperarsenha"} tipoformulario={"recuperarSenha"} />
         </Container>
