@@ -8,6 +8,7 @@ import DoadorasCampeiras from './paginas/DoadorasCampeiras';
 import DoadorasDiscos from './paginas/DoadorasDiscos';
 import { TiThMenu } from 'react-icons/ti';
 
+
 const Home = () => {
     const componentes = {
         Abelhas: <Abelhas />,
