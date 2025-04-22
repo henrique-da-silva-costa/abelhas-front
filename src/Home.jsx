@@ -6,7 +6,7 @@ import { Usuario } from './contexts/Usuario';
 import axios from 'axios';
 import DoadorasCampeiras from './paginas/DoadorasCampeiras';
 import DoadorasDiscos from './paginas/DoadorasDiscos';
-import { TiThMenu } from 'react-icons/ti';
+import TiThMenu from 'react-icons';
 
 
 const Home = () => {
