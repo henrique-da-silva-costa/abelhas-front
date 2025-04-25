@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Badge, Button, Container, Table } from 'reactstrap'
+import { Badge, Button, Container, Input, Table } from 'reactstrap'
 import Cadastrar from '../crud/Cadastrar'
 import axios from 'axios';
 import styles from "../stilos.module.css"
@@ -18,12 +18,15 @@ const Abelhas = () => {
     const [botaoDesabilitado, setBotaoDesabilitado] = useState(false);
     const [generos, setGeneros] = useState([]);
     const [status, setStatus] = useState([]);
+    const [filtro, setFiltro] = useState([]);
+    const [formulario, setFormulario] = useState({});
 
     const pegarDados = (page) => {
         setBotaoDesabilitado(true)
         axios.get("http://127.0.0.1:8000/colmeias", {
             withCredentials: true,
             params: {
+                "filtro": filtro,
                 "usuario_id": usuarioId,
                 "page": page
             }
@@ -77,12 +80,36 @@ const Abelhas = () => {
     }
 
     const inputsFiltros = {
+        nome: "",
         especie: "",
-        status: "",
+        status: ""
+    }
+
+    const changeformulario = (e) => {
+        const { name, value } = e.target;
+
+        setFormulario({
+            ...formulario, [name]: value
+        })
+
+        console.log(name)
+    }
+
+    const filtrar = (e) => {
+        setTimeout(() => {
+            setFiltro(e.target.value)
+            pegarDados();
+        }, 1000);
     }
 
     return (
         <Container className="mt-3">
+            <Input name="filtro" onChange={changeformulario} />
+            <select name="" id="">
+                <option value=""></option>
+                <option value=""></option>
+            </select>
+            <select name="" id=""></select>
             <div className="d-flex justify-content-space-between">
                 <h1>Abelhas</h1>
             </div>
