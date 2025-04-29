@@ -106,7 +106,8 @@ const Cadastrar = ({
                 axios.post(`http://localhost:8000/${url}`, formulario, {
                     withCredentials: true,
                     headers: {
-                        "X-CSRF-TOKEN": response.data.token
+                        "X-CSRF-TOKEN": response.data.token,
+                        "Content-Type": "multipart/form-data"
                     }
                 }).then(res => {
                     for (const [key, value] of Object.entries(formulario)) {
