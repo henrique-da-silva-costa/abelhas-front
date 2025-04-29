@@ -29,6 +29,7 @@ const Cadastrar = ({
     const [tipoDivisao, setTipoDivisao] = useState([]);
     const [doadoraDisco, setDoadoraDisco] = useState([]);
     const [doadoraCampeira, setDoadoraCampeira] = useState([]);
+    const [imglocalNome, setImglocalNome] = useState("");
 
     const toggle = () => {
         setModal(!modal)
@@ -39,6 +40,14 @@ const Cadastrar = ({
 
     const changeformulario = (e) => {
         const { name, value, files } = e.target;
+
+        if (files) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setImglocalNome(reader.result);
+            };
+            reader.readAsDataURL(files[0]);
+        }
 
         if (name == "genero_id" && value > 0) {
             axios.get("http://localhost:8000/especies", { params: { genero_id: value } }).then((res) => {
@@ -76,13 +85,17 @@ const Cadastrar = ({
         }
 
         setFormulario({
-            ...formulario, [name]: value
-        })
+            ...formulario, [name]: name == "img" ? files[0] : value
+        });
+
+
     }
 
     const enviar = (e) => {
         e.preventDefault();
         const msgerros = {};
+
+        console.log(formulario)
 
         setErro(msgerros);
         setDesabilitar(true);
@@ -182,6 +195,10 @@ const Cadastrar = ({
 
         if (tipo == "usuario_id") {
             return "hidden";
+        }
+
+        if (tipo == "img") {
+            return "file";
         }
 
         if (tipo === "doadora_disco_id" || tipo === "doadora_campeira_id" || tipo === "tipo_divisao_id") {
@@ -305,7 +322,8 @@ const Cadastrar = ({
 
 
     return (
-        <div>
+
+        <div >
             <Button color="transparent" className="border border-0" onClick={toggle}>
                 <strong className="text-success">CADASTRAR</strong> <IoAdd color="green" fontSize={40} />
             </Button>
@@ -314,7 +332,18 @@ const Cadastrar = ({
                 <ModalBody>
                     <form onSubmit={enviar}>
                         <FormGroup>
+                            {imglocalNome && (
+                                <div>
+                                    <h3>Pré-visualização:</h3>
+                                    <img
+                                        src={imglocalNome}
+                                        alt="Pré-visualização"
+                                        style={{ maxWidth: '100%', height: '100px' }}
+                                    />
+                                </div>
+                            )}
                             <div className="row">
+
                                 {formulario ? Object.keys(formulario).map((valor, index) => {
                                     return (
                                         <div key={index} className={inputInvisivelEDivisaoColunas(valor, temMatriz, formularioNome)}>
@@ -335,7 +364,7 @@ const Cadastrar = ({
                 </ModalBody>
             </Modal>
 
-        </div>
+        </ div>
     )
 }
 

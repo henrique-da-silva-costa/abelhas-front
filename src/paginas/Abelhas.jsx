@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Badge, Button, Container, Input, Table } from 'reactstrap'
+import { Badge, Button, Container, Form, Input, InputGroup, Table } from 'reactstrap'
 import Cadastrar from '../crud/Cadastrar'
 import axios from 'axios';
 import styles from "../stilos.module.css"
@@ -18,22 +18,24 @@ const Abelhas = () => {
     const [botaoDesabilitado, setBotaoDesabilitado] = useState(false);
     const [generos, setGeneros] = useState([]);
     const [status, setStatus] = useState([]);
-    const [filtro, setFiltro] = useState([]);
     const [formulario, setFormulario] = useState({});
 
-    const pegarDados = (page) => {
+    const pegarDados = (page, filtros) => {
         setBotaoDesabilitado(true)
         axios.get("http://127.0.0.1:8000/colmeias", {
             withCredentials: true,
             params: {
-                "filtro": filtro,
+                "filtros": filtros,
                 "usuario_id": usuarioId,
                 "page": page
             }
         }).then((res) => {
-            setDados(res.data.data);
-            setPaginaAtual(res.data.current_page);
-            setTotalPages(res.data.last_page);
+            if (res.data.data) {
+                setDados(res.data.data);
+                setPaginaAtual(res.data.current_page);
+                setTotalPages(res.data.last_page);
+            }
+
             setBotaoDesabilitado(false);
             setRemoverLoading(true);
         }).catch((err) => {
@@ -68,6 +70,7 @@ const Abelhas = () => {
     };
 
     const inputs = {
+        img: null,
         nome: "",
         data_criacao: "",
         genero_id: "",
@@ -79,37 +82,38 @@ const Abelhas = () => {
         usuario_id: usuarioId
     }
 
-    const inputsFiltros = {
-        nome: "",
-        especie: "",
-        status: ""
-    }
-
     const changeformulario = (e) => {
-        const { name, value } = e.target;
+        const { name, value, files } = e.target;
 
         setFormulario({
-            ...formulario, [name]: value
-        })
-
-        console.log(name)
+            ...formulario, [name]: name === "img" ? files[0] : value
+        });
     }
 
     const filtrar = (e) => {
-        setTimeout(() => {
-            setFiltro(e.target.value)
-            pegarDados();
-        }, 1000);
+        e.preventDefault();
+        pegarDados(paginaAtual, formulario);
     }
 
     return (
         <Container className="mt-3">
-            <Input name="filtro" onChange={changeformulario} />
-            <select name="" id="">
-                <option value=""></option>
-                <option value=""></option>
-            </select>
-            <select name="" id=""></select>
+            <Form>
+                <InputGroup>
+                    <Input name="nome" onChange={changeformulario} />
+                    <select className="form-control" onChange={changeformulario} name="status" id="">
+                        <option value="">SELECIONE</option>
+                        <option value="1">DIVISÃO</option>
+                        <option value="2">MATRIZ</option>
+                    </select>
+                    <select className="form-control" onChange={changeformulario} name="genero" id="">
+                        <option value="">SELECIONE</option>
+                        <option value="1">Meliponas</option>
+                        <option value="2">Scaptrigonas</option>
+                        <option value="3">Trigonas</option>
+                    </select>
+                    <Button onClick={filtrar}>Filtrar</Button>
+                </InputGroup>
+            </Form>
             <div className="d-flex justify-content-space-between">
                 <h1>Abelhas</h1>
             </div>

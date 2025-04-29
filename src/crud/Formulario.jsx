@@ -19,8 +19,8 @@ const Formulario = ({ inputs = {}, url, textoBotao, tipoformulario, corBotao = "
         const { name, value, files } = e.target;
 
         setFormulario({
-            ...formulario, [name]: value
-        })
+            ...formulario, [name]: name === "img" ? files[0] : value
+        });
     }
 
     const enviar = (e) => {
@@ -157,6 +157,10 @@ const Formulario = ({ inputs = {}, url, textoBotao, tipoformulario, corBotao = "
             return "hidden";
         }
 
+        if (tipo == "img") {
+            return "file";
+        }
+
         if (tiposData.includes(tipo)) {
             return "date";
         }
@@ -177,6 +181,7 @@ const Formulario = ({ inputs = {}, url, textoBotao, tipoformulario, corBotao = "
 
     return (
         <div>
+            {formulario.img ? <img src={URL.createObjectURL(formulario.img)} alt="" height={100} width={100} /> : ""}
             <form onSubmit={enviar}>
                 <FormGroup>
                     {formulario ? Object.keys(formulario).map((valor, index) => {
