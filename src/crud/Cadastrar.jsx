@@ -318,6 +318,11 @@ const Cadastrar = ({
             </>
         }
 
+        if (tipo == "img") {
+            return <Input accept="image/*" placeholder={tipo} type={tipoValorInput(tipo)} disabled={desabilitar} name={tipo} onChange={changeformulario} />
+        }
+
+
         return <Input placeholder={tipo} type={tipoValorInput(tipo)} disabled={desabilitar} name={tipo} onChange={changeformulario} />
     }
 

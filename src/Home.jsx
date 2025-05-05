@@ -17,7 +17,8 @@ const Home = () => {
         DoadorasDiscos: <DoadorasDiscos />
     }
 
-    const [dropdownOpen, setDropdownOpen] = useState(false);
+    const [dropdownColmeias, setDropdownColmeias] = useState(false);
+    const [dropdownDoadoras, setDropdownDoadoras] = useState(false);
     const [isOpen, setIsOpen] = useState(false);
     const [componente, setComponente] = useState(componentes["Abelhas"]);
     const { setAuth } = useContext(Usuario);
@@ -46,7 +47,8 @@ const Home = () => {
     }
 
     const toggle = () => setIsOpen(!isOpen);
-    const toggles = () => setDropdownOpen((prevState) => !prevState);
+    const togglesColmeias = () => setDropdownColmeias((prevState) => !prevState);
+    const togglesDoadoras = () => setDropdownDoadoras((prevState) => !prevState);
 
     return (
         <>
@@ -60,24 +62,22 @@ const Home = () => {
                     </OffcanvasHeader>
                     <OffcanvasBody>
                         <div className="d-flex flex-column gap-2 justify-content-end align-items-start">
-                            <Dropdown isOpen={dropdownOpen} toggle={toggles} direction={'end'}>
-                                <DropdownToggle caret>Dropdown</DropdownToggle>
-                                <DropdownMenu>
-                                    <DropdownItem header>Header</DropdownItem>
-                                    <DropdownItem>Some Action</DropdownItem>
-                                    <DropdownItem text>Dropdown Item Text</DropdownItem>
-                                    <DropdownItem disabled>Action (disabled)</DropdownItem>
-                                    <DropdownItem divider />
-                                    <DropdownItem>Foo Action</DropdownItem>
-                                    <DropdownItem>Bar Action</DropdownItem>
-                                    <DropdownItem>Quo Action</DropdownItem>
+                            <Dropdown isOpen={dropdownColmeias} toggle={togglesColmeias} direction={'end'}>
+                                <DropdownToggle caret>COLMEIAS</DropdownToggle>
+                                <DropdownMenu className="p-2">
+                                    <Button color="primary" className="w-100 mb-2" onClick={() => linkPagina("Abelhas")}>Abelhas</Button>
+                                    <Button className="w-100" onClick={() => linkPagina("Divisoes")}>Divisoes</Button>
                                 </DropdownMenu>
                             </Dropdown>
 
-                            <Button color="primary" className="w-100" onClick={() => linkPagina("Abelhas")}>Abelhas</Button>
-                            <Button className="w-100" onClick={() => linkPagina("Divisoes")}>Divisoes</Button>
-                            <Button className="w-100" onClick={() => linkPagina("DoadorasCampeiras")}>Doadoras Campeiras</Button>
-                            <Button className="w-100" onClick={() => linkPagina("DoadorasDiscos")}>Doadoras Discos</Button>
+                            <Dropdown isOpen={dropdownDoadoras} toggle={togglesDoadoras} direction={'end'}>
+                                <DropdownToggle caret>DOADORAS</DropdownToggle>
+                                <DropdownMenu className="p-2">
+                                    <Button className="w-100 mb-2" onClick={() => linkPagina("DoadorasCampeiras")}>Doadoras Campeiras</Button>
+                                    <Button className="w-100" onClick={() => linkPagina("DoadorasDiscos")}>Doadoras Discos</Button>
+                                </DropdownMenu>
+                            </Dropdown>
+
                             <Button color="danger" onClick={logOut}>SAIR</Button>
                         </div>
                     </OffcanvasBody>

@@ -24,6 +24,9 @@ export const tipoLabel = (tipo, temMatriz) => {
         return "gênero"
     }
 
+    if (tipo == "img_caminho") {
+        return "";
+    }
 
     if (tipo == "usuario_id") {
         return ""
@@ -49,7 +52,7 @@ export const inputInvisivelEDivisaoColunas = (tipo, temMatriz, formularioNome = 
         return "";
     }
 
-    const tiposDNone = ["doadora_disco_id", "doadora_campeira_id", "tipo_divisao_id", "usuario_id", "id"];
+    const tiposDNone = ["doadora_disco_id", "doadora_campeira_id", "tipo_divisao_id", "usuario_id", "id", "img_caminho"];
 
     // const sempreNone = ["id"]
 

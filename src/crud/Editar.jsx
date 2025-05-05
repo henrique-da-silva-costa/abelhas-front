@@ -29,9 +29,18 @@ const Editar = ({
     const [tipoDivisao, setTipoDivisao] = useState([]);
     const [doadoraDisco, setDoadoraDisco] = useState([]);
     const [doadoraCampeira, setDoadoraCampeira] = useState([]);
+    const [imglocalNome, setImglocalNome] = useState("");
 
     const changeformulario = (e) => {
         const { name, value, files } = e.target;
+
+        if (files) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setImglocalNome(reader.result);
+            };
+            reader.readAsDataURL(files[0]);
+        }
 
         if (name == "genero_id" && value > 0) {
             axios.get("http://localhost:8000/especies", { params: { genero_id: value } }).then((res) => {
@@ -48,7 +57,7 @@ const Editar = ({
         }
 
         setFormulario({
-            ...formulario, [name]: value
+            ...formulario, [name]: name === "img" ? files[0] : value
         })
     }
 
@@ -104,16 +113,49 @@ const Editar = ({
 
         const msgerros = {};
 
+        function jsonToFormData(json) {
+            const formData = new FormData();
+
+            for (const key in json) {
+                if (json.hasOwnProperty(key)) {
+                    // Se o valor for um objeto (como File), adiciona diretamente
+                    // Caso contrário, converte para string
+                    if (json[key] instanceof File || json[key] instanceof Blob) {
+                        formData.append(key, json[key]);
+                    } else if (typeof json[key] === 'object') {
+                        // Para objetos aninhados, você pode converter para JSON string
+                        formData.append(key, JSON.stringify(json[key]));
+                    } else {
+                        formData.append(key, json[key]);
+                    }
+                }
+            }
+
+            return formData;
+        }
+
+        const formData = jsonToFormData(formulario);
+
+        // Para verificar o conteúdo (apenas para debug)
+        // for (const [key, value] of formData.entries()) {
+        //     console.log(key, value);
+        // }
+
+        console.log(formData);
+
+
         setErro(msgerros);
         setDesabilitar(true);
         setTextoBotaoCarregando("CAREGANDO...")
 
         axios.get("http://localhost:8000/token", { withCredentials: true })
             .then(response => {
-                axios.put(`http://localhost:8000/${url}`, formulario, {
+                axios.put(`http://localhost:8000/${url}`, formData, {
                     withCredentials: true,
                     headers: {
-                        "X-CSRF-TOKEN": response.data.token
+                        "X-CSRF-TOKEN": response.data.token,
+                        // "Content-Type": "application/json",
+                        "Content-Type": "multipart/form-data",
                     }
                 }).then(res => {
                     for (const [key, value] of Object.entries(formulario)) {
@@ -167,8 +209,8 @@ const Editar = ({
                             return;
                         }
 
-                        if (res.data.campo) {
-                            msgerros[res.data.campo] = res.data.msg;
+                        if (response.data.campo) {
+                            msgerros[response.data.campo] = response.data.msg;
                         }
 
                         if (value != null && value.length == 0) {
@@ -203,6 +245,14 @@ const Editar = ({
 
         if (tiposData.includes(tipo)) {
             return "date";
+        }
+
+        if (tipo == "img") {
+            return "file";
+        }
+
+        if (tipo == "img_caminho") {
+            return "hidden";
         }
 
         if (tipo == "usuario_id") {
@@ -320,6 +370,10 @@ const Editar = ({
             </>
         }
 
+        if (tipo == "img") {
+            return <Input accept="image/*" placeholder={tipo} value={formulario.tipo} type={tipoValorInput(tipo)} disabled={desabilitar} name={tipo} onChange={changeformulario} />
+        }
+
         return <Input placeholder={tipo} defaultValue={formulario[tipo]} type={tipoValorInput(tipo)} disabled={desabilitar} name={tipo} onChange={changeformulario} />
     }
 
@@ -333,6 +387,16 @@ const Editar = ({
                 <ModalBody>
                     <form onSubmit={enviar}>
                         <FormGroup>
+                            {imglocalNome && (
+                                <div>
+                                    <h3>Pré-visualização:</h3>
+                                    <img
+                                        src={!imglocalNome ? formulario.img : imglocalNome}
+                                        alt="Pré-visualização"
+                                        style={{ maxWidth: '100%', height: '100px' }}
+                                    />
+                                </div>
+                            )}
                             <div className="row">
                                 {formulario ? Object.keys(formulario).map((valor, index) => {
                                     return (

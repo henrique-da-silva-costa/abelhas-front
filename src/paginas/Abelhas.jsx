@@ -77,7 +77,6 @@ const Abelhas = () => {
         especie_id: "",
         status_id: "",
         doadora_disco_id: "",
-        tipo_divisao_id: "",
         doadora_campeira_id: "",
         usuario_id: usuarioId
     }
@@ -97,7 +96,7 @@ const Abelhas = () => {
 
     return (
         <Container className="mt-3">
-            <Form>
+            <Form onSubmit={filtrar}>
                 <InputGroup>
                     <Input name="nome" onChange={changeformulario} />
                     <select className="form-control" onChange={changeformulario} name="status" id="">
@@ -111,7 +110,7 @@ const Abelhas = () => {
                         <option value="2">Scaptrigonas</option>
                         <option value="3">Trigonas</option>
                     </select>
-                    <Button onClick={filtrar}>Filtrar</Button>
+                    <Button>Filtrar</Button>
                 </InputGroup>
             </Form>
             <div className="d-flex justify-content-space-between">
@@ -127,6 +126,7 @@ const Abelhas = () => {
                             <tr>
                                 <th>NOME</th>
                                 <th>STATUS</th>
+                                <th>IMAGEM</th>
                                 <th></th>
                             </tr>
                         </thead>
@@ -142,6 +142,12 @@ const Abelhas = () => {
                                                 <Badge color={dado.status_id == 2 ? "success" : "secondary"}>
                                                     {dado.status_id == 2 ? "MATRIZ" : "DIVISÃO"}
                                                 </Badge>
+                                            </td>
+                                            <td>
+
+                                                {dado.img ?
+                                                    <img src={dado.img} height={50} alt="Imagem da colmeia"></img> : "SEM IMAGEM"
+                                                }
                                             </td>
                                             <td className="align-items-center d-flex gap-2 justify-content-end">
                                                 <Editar tamanhoModal={"xl"} pegarDadosCarregar={pegarDados} generos={generos} status={status} url={"colmeia/editar"} urlGet={`colmeia?id=${dado.id}`} />
