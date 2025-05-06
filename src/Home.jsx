@@ -7,6 +7,7 @@ import axios from 'axios';
 import DoadorasCampeiras from './paginas/DoadorasCampeiras';
 import DoadorasDiscos from './paginas/DoadorasDiscos';
 import { TiThMenu } from 'react-icons/ti';
+import styles from "./stilos.module.css";
 
 
 const Home = () => {
@@ -17,6 +18,7 @@ const Home = () => {
         DoadorasDiscos: <DoadorasDiscos />
     }
 
+    const [usuario] = useState(JSON.parse(sessionStorage.getItem("usuario")));
     const [dropdownColmeias, setDropdownColmeias] = useState(false);
     const [dropdownDoadoras, setDropdownDoadoras] = useState(false);
     const [isOpen, setIsOpen] = useState(false);
@@ -58,7 +60,10 @@ const Home = () => {
                 </Button>
                 <Offcanvas backdrop="static" isOpen={isOpen} toggle={toggle}>
                     <OffcanvasHeader toggle={toggle}>
-                        MENU
+                        <div className="d-flex gap-1">
+                            <img className={styles.imgUsuario} src={usuario.img} alt="" height={100} />
+                            <p>{usuario.nome}</p>
+                        </div>
                     </OffcanvasHeader>
                     <OffcanvasBody>
                         <div className="d-flex flex-column gap-2 justify-content-end align-items-start">

@@ -6,7 +6,7 @@ import styles from "../stilos.module.css"
 import Carregando from '../Carregando';
 import Editar from '../crud/Editar';
 import Excluir from '../crud/Excluir';
-import Formulario from '../crud/Formulario';
+import Filtros from './Filtros';
 
 const Abelhas = () => {
     const usuarioId = sessionStorage.getItem("usuario") ? JSON.parse(sessionStorage.getItem("usuario")).id : "";
@@ -18,16 +18,15 @@ const Abelhas = () => {
     const [botaoDesabilitado, setBotaoDesabilitado] = useState(false);
     const [generos, setGeneros] = useState([]);
     const [status, setStatus] = useState([]);
-    const [formulario, setFormulario] = useState({});
 
     const pegarDados = (page, filtros) => {
         setBotaoDesabilitado(true)
         axios.get("http://127.0.0.1:8000/colmeias", {
             withCredentials: true,
             params: {
-                "filtros": filtros,
                 "usuario_id": usuarioId,
-                "page": page
+                filtros,
+                page
             }
         }).then((res) => {
             if (res.data.data) {
@@ -72,6 +71,7 @@ const Abelhas = () => {
     const inputs = {
         img: null,
         nome: "",
+        descricao: "",
         data_criacao: "",
         genero_id: "",
         especie_id: "",
@@ -81,38 +81,9 @@ const Abelhas = () => {
         usuario_id: usuarioId
     }
 
-    const changeformulario = (e) => {
-        const { name, value, files } = e.target;
-
-        setFormulario({
-            ...formulario, [name]: name === "img" ? files[0] : value
-        });
-    }
-
-    const filtrar = (e) => {
-        e.preventDefault();
-        pegarDados(paginaAtual, formulario);
-    }
-
     return (
         <Container className="mt-3">
-            <Form onSubmit={filtrar}>
-                <InputGroup>
-                    <Input name="nome" onChange={changeformulario} />
-                    <select className="form-control" onChange={changeformulario} name="status" id="">
-                        <option value="">SELECIONE</option>
-                        <option value="1">DIVISÃO</option>
-                        <option value="2">MATRIZ</option>
-                    </select>
-                    <select className="form-control" onChange={changeformulario} name="genero" id="">
-                        <option value="">SELECIONE</option>
-                        <option value="1">Meliponas</option>
-                        <option value="2">Scaptrigonas</option>
-                        <option value="3">Trigonas</option>
-                    </select>
-                    <Button>Filtrar</Button>
-                </InputGroup>
-            </Form>
+            <Filtros paginaAtual={paginaAtual} pegarDados={pegarDados} />
             <div className="d-flex justify-content-space-between">
                 <h1>Abelhas</h1>
             </div>

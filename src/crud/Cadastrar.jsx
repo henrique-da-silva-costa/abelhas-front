@@ -87,15 +87,11 @@ const Cadastrar = ({
         setFormulario({
             ...formulario, [name]: name == "img" ? files[0] : value
         });
-
-
     }
 
     const enviar = (e) => {
         e.preventDefault();
         const msgerros = {};
-
-        console.log(formulario)
 
         setErro(msgerros);
         setDesabilitar(true);
@@ -200,6 +196,10 @@ const Cadastrar = ({
 
         if (tipo == "img") {
             return "file";
+        }
+
+        if (tipo == "descricao") {
+            return "textarea";
         }
 
         if (tipo === "doadora_disco_id" || tipo === "doadora_campeira_id" || tipo === "tipo_divisao_id") {

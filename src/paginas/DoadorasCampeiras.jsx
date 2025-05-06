@@ -6,6 +6,7 @@ import styles from "../stilos.module.css"
 import Carregando from '../Carregando';
 import Editar from '../crud/Editar';
 import Excluir from '../crud/Excluir';
+import Filtros from './Filtros';
 
 const DoadorasCampeiras = () => {
     const usuarioId = sessionStorage.getItem("usuario") ? JSON.parse(sessionStorage.getItem("usuario")).id : "";
@@ -17,13 +18,14 @@ const DoadorasCampeiras = () => {
     const [botaoDesabilitado, setBotaoDesabilitado] = useState(false);
     const [colmeias, setColmeias] = useState([]);
 
-    const pegarDados = (page) => {
+    const pegarDados = (page, filtros) => {
         setBotaoDesabilitado(true)
         axios.get("http://127.0.0.1:8000/doadoras/campeira", {
             withCredentials: true,
             params: {
                 "usuario_id": usuarioId,
-                "page": page
+                filtros,
+                page
             }
         }).then((res) => {
             if (res.data.length == 0) {
@@ -70,6 +72,7 @@ const DoadorasCampeiras = () => {
 
     return (
         <Container className="mt-3">
+            <Filtros pegarDados={pegarDados} paginaAtual={paginaAtual} nomeFiltro={"doadoras"} />
             <h1>Doadoras de Campeira</h1>
             <div className="text-end">
                 <Cadastrar formularioNome="doadora" pegarDadosCarregar={pegarDados} colmeiasMatrizes={colmeias} inputs={inputs} url={"doadora/cadastrar/campeira"} />
@@ -80,7 +83,6 @@ const DoadorasCampeiras = () => {
                         <thead>
                             <tr>
                                 <th>NOME</th>
-                                <th>DOOU</th>
                                 <th></th>
                             </tr>
                         </thead>
@@ -92,14 +94,6 @@ const DoadorasCampeiras = () => {
                                             <td>
                                                 <p>{dado.colmeia_nome}</p>
                                             </td>
-                                            <td>
-                                                <p>{dado.tipo_doacao_tipo}</p>
-                                            </td>
-                                            {/* <td>
-                                                <Badge color={dado.status_id == 2 ? "success" : "secondary"}>
-                                                    {dado.status_id == 2 ? "MATRIZ" : "DIVISÃO"}
-                                                </Badge>
-                                            </td> */}
                                             <td className="align-items-center d-flex gap-2 justify-content-end">
                                                 <Editar formularioNome="doadora" pegarDadosCarregar={pegarDados} colmeiasMatrizes={colmeias} url={"doadora/editar/campeira"} urlGet={`doadora/campeira?id=${dado.id}`} />
                                                 <Excluir pegarDados={pegarDados} url={`doadora/excluir/campeira?id=${dado.id}`} titulo={"Excluir colmeia"} />

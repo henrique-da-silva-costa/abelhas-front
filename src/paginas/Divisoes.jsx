@@ -3,6 +3,7 @@ import { Badge, Button, Container, Table } from 'reactstrap'
 import axios from 'axios';
 import styles from "../stilos.module.css"
 import Carregando from '../Carregando';
+import Filtros from './Filtros';
 
 const Divisoes = () => {
     const usuarioId = sessionStorage.getItem("usuario") ? JSON.parse(sessionStorage.getItem("usuario")).id : "";
@@ -13,13 +14,14 @@ const Divisoes = () => {
     const [totalPages, setTotalPages] = useState(1);
     const [botaoDesabilitado, setBotaoDesabilitado] = useState(false);
 
-    const pegarDados = (page) => {
+    const pegarDados = (page, filtros) => {
         setBotaoDesabilitado(true)
         axios.get("http://127.0.0.1:8000/colmeias/divisoes", {
             withCredentials: true,
             params: {
                 "usuario_id": usuarioId,
-                "page": page
+                filtros,
+                page
             }
         }).then((res) => {
             setDados(res.data.data);
@@ -48,6 +50,7 @@ const Divisoes = () => {
 
     return (
         <Container className="mt-3">
+            <Filtros pegarDados={pegarDados} paginaAtual={paginaAtual} nomeFiltro={"divisoes"} />
             <h1>Divisões</h1>
             <div className="row">
                 {dados.length > 0 ?

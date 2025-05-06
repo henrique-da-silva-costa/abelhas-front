@@ -8,6 +8,9 @@ export const tipoLabel = (tipo, temMatriz) => {
     if (tipo == "status_id") {
         return "status"
     }
+    if (tipo == "descricao") {
+        return "descrição"
+    }
     if (tipo == "doadora_disco_id") {
         return "doadora/disco"
     }
