@@ -30,6 +30,7 @@ const Cadastrar = ({
     const [doadoraDisco, setDoadoraDisco] = useState([]);
     const [doadoraCampeira, setDoadoraCampeira] = useState([]);
     const [imglocalNome, setImglocalNome] = useState("");
+    const [generoSelect, setGeneroSelect] = useState("");
 
     const toggle = () => {
         setModal(!modal)
@@ -64,8 +65,16 @@ const Cadastrar = ({
                 console.error(err);
             })
 
-            axios.get("http://localhost:8000/doadoras/disco/select", { params: { usuario_id: usuarioId } }).then((res) => {
+            axios.get("http://localhost:8000/doadoras/disco/select", {
+                params: {
+                    usuario_id: usuarioId,
+                    "genero": name
+                }
+            }).then((res) => {
                 setDoadoraDisco(res.data)
+                if (res.data[0].colmeia_genero_id) {
+                    setGeneroSelect(res.data[0].colmeia_genero_id);
+                }
                 // setDesabilitarEspecie(false)
             }).catch((err) => {
                 console.error(err);
@@ -87,11 +96,13 @@ const Cadastrar = ({
         setFormulario({
             ...formulario, [name]: name == "img" ? files[0] : value
         });
+
     }
 
     const enviar = (e) => {
         e.preventDefault();
         const msgerros = {};
+        formulario["genero_select"] = generoSelect;
 
         setErro(msgerros);
         setDesabilitar(true);
@@ -191,6 +202,10 @@ const Cadastrar = ({
         }
 
         if (tipo == "usuario_id") {
+            return "hidden";
+        }
+
+        if (tipo == "genero_select") {
             return "hidden";
         }
 

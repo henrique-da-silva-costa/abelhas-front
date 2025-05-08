@@ -35,6 +35,14 @@ export const tipoLabel = (tipo, temMatriz) => {
         return ""
     }
 
+    if (tipo == "id") {
+        return "";
+    }
+
+    if (tipo == "genero_select") {
+        return "";
+    }
+
     if (tipo === "doadora_disco_id" || tipo === "doadora_campeira_id" || tipo === "tipo_divisao_id") {
         if (!temMatriz) {
             return tipo
@@ -55,7 +63,7 @@ export const inputInvisivelEDivisaoColunas = (tipo, temMatriz, formularioNome = 
         return "";
     }
 
-    const tiposDNone = ["doadora_disco_id", "doadora_campeira_id", "tipo_divisao_id", "usuario_id", "id", "img_caminho"];
+    const tiposDNone = ["doadora_disco_id", "doadora_campeira_id", "tipo_divisao_id", "usuario_id", "id", "img_caminho", "tipo_doacao_id", "genero_select"];
 
     // const sempreNone = ["id"]
 
@@ -70,7 +78,6 @@ export const inputInvisivelEDivisaoColunas = (tipo, temMatriz, formularioNome = 
                 return "col-md-3";
             }
             // }
-            // return ""
         }
 
         return "d-none"
