@@ -7,6 +7,7 @@ import Carregando from '../Carregando';
 import Editar from '../crud/Editar';
 import Excluir from '../crud/Excluir';
 import Filtros from './Filtros';
+import ModalInformacoes from '../componentes/ModalInformacoes';
 
 const Abelhas = () => {
     const usuarioId = sessionStorage.getItem("usuario") ? JSON.parse(sessionStorage.getItem("usuario")).id : "";
@@ -72,7 +73,7 @@ const Abelhas = () => {
         img: null,
         nome: "",
         descricao: "",
-        data_criacao: "",
+        // data_criacao: "",
         genero_id: "",
         especie_id: "",
         status_id: "",
@@ -98,6 +99,7 @@ const Abelhas = () => {
                                 <th>NOME</th>
                                 <th>STATUS</th>
                                 <th>IMAGEM</th>
+                                <th>DESCRIÇÃO</th>
                                 <th></th>
                             </tr>
                         </thead>
@@ -119,6 +121,9 @@ const Abelhas = () => {
                                                 {dado.img ?
                                                     <img src={dado.img} height={50} alt="Imagem da colmeia"></img> : "SEM IMAGEM"
                                                 }
+                                            </td>
+                                            <td>
+                                                <ModalInformacoes titulo={"Descrição"} conteudo={dado.descricao} textoBotao={"VER MAIS"} />
                                             </td>
                                             <td className="align-items-center d-flex gap-2 justify-content-end">
                                                 <Editar tamanhoModal={"xl"} pegarDadosCarregar={pegarDados} generos={generos} status={status} url={"colmeia/editar"} urlGet={`colmeia?id=${dado.id}`} />

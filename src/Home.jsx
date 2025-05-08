@@ -60,10 +60,12 @@ const Home = () => {
                 </Button>
                 <Offcanvas backdrop="static" isOpen={isOpen} toggle={toggle}>
                     <OffcanvasHeader toggle={toggle}>
-                        <div className="d-flex gap-1">
-                            <img className={styles.imgUsuario} src={usuario.img} alt="" height={100} />
-                            <p>{usuario.nome}</p>
-                        </div>
+                        {
+                            usuario ? <div className="d-flex gap-1">
+                                <img className={styles.imgUsuario} src={usuario.img} alt="" height={100} />
+                                <p>{usuario.nome}</p>
+                            </div> : ""
+                        }
                     </OffcanvasHeader>
                     <OffcanvasBody>
                         <div className="d-flex flex-column gap-2 justify-content-end align-items-start">

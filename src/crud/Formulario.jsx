@@ -34,7 +34,6 @@ const Formulario = ({ inputs = {}, url, textoBotao, tipoformulario, corBotao = "
 
         axios.get("http://localhost:8000/token", { withCredentials: true })
             .then(response => {
-                console.log(response.data);
                 axios.post(`http://localhost:8000/${url}`, formulario, {
                     withCredentials: true,
                     headers: {
@@ -42,9 +41,6 @@ const Formulario = ({ inputs = {}, url, textoBotao, tipoformulario, corBotao = "
                         "Content-Type": "multipart/form-data"
                     }
                 }).then(res => {
-
-                    console.log(res.data);
-
                     for (const [key, value] of Object.entries(formulario)) {
                         if (value != null && value.length == 0) {
                             msgerros[key] = "Campo obrigatório";

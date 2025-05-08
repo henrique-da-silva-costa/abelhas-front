@@ -251,6 +251,10 @@ const Editar = ({
             return "file";
         }
 
+        if (tipo == "descricao") {
+            return "textarea";
+        }
+
         if (tipo == "img_caminho") {
             return "hidden";
         }
