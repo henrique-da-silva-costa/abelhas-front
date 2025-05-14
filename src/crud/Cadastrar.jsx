@@ -25,6 +25,7 @@ const Cadastrar = ({
     const [especies, setEspecies] = useState([]);
     const [textoBotaoCarregando, setTextoBotaoCarregando] = useState("CADASTRAR");
     const [temMatriz, setTemMatriz] = useState(true);
+    const [temDoadora, setTemDoadora] = useState(true);
     const [modal, setModal] = useState(false);
     const [tipoDivisao, setTipoDivisao] = useState([]);
     const [doadoraDisco, setDoadoraDisco] = useState([]);
@@ -57,35 +58,39 @@ const Cadastrar = ({
             }).catch((err) => {
                 console.error(err);
             })
-        } else {
-            axios.get("http://localhost:8000/doadoras/campeira/select", { params: { usuario_id: usuarioId } }).then((res) => {
+        }
+
+        if (name == "especie_id") {
+            axios.get("http://localhost:8000/doadoras/disco/select", {
+                params: {
+                    usuario_id: usuarioId,
+                    especie_id: value
+                }
+            }).then((res) => {
+                setDoadoraDisco(res.data)
+                // setDesabilitarEspecie(false)
+            }).catch((err) => {
+                console.error(err);
+            })
+
+            axios.get("http://localhost:8000/doadoras/campeira/select", {
+                params: {
+                    usuario_id: usuarioId,
+                    especie_id: value
+                }
+            }).then((res) => {
                 setDoadoraCampeira(res.data)
                 // setDesabilitarEspecie(false)
             }).catch((err) => {
                 console.error(err);
             })
-
-            axios.get("http://localhost:8000/doadoras/disco/select", {
-                params: {
-                    usuario_id: usuarioId,
-                    "genero": name
-                }
-            }).then((res) => {
-                setDoadoraDisco(res.data)
-                if (res.data[0].colmeia_genero_id) {
-                    setGeneroSelect(res.data[0].colmeia_genero_id);
-                }
-                // setDesabilitarEspecie(false)
-            }).catch((err) => {
-                console.error(err);
-            })
-
-            axios.get("http://localhost:8000/colmeias/tipodivisoes").then((res) => {
-                setTipoDivisao(res.data)
-            }).catch((err) => {
-                console.error(err);
-            })
         }
+
+        axios.get("http://localhost:8000/colmeias/tipodivisoes").then((res) => {
+            setTipoDivisao(res.data)
+        }).catch((err) => {
+            console.error(err);
+        })
 
         if (name == "status_id" && value == 2) {
             setTemMatriz(true);
@@ -104,6 +109,8 @@ const Cadastrar = ({
         const msgerros = {};
         formulario["genero_select"] = generoSelect;
 
+        const camposLivres = ["doadora_campeira_id", "doadora_disco_id"];
+
         setErro(msgerros);
         setDesabilitar(true);
         setTextoBotaoCarregando("CAREGANDO...")
@@ -118,7 +125,7 @@ const Cadastrar = ({
                     }
                 }).then(res => {
                     for (const [key, value] of Object.entries(formulario)) {
-                        if (value != null && value.length == 0) {
+                        if (!camposLivres.includes(key) && value != null && value.length == 0) {
                             msgerros[key] = "Campo obrigatório";
                         }
 
@@ -240,7 +247,7 @@ const Cadastrar = ({
                             return (
                                 <option key={index} value={disco.id}>{disco.colmeia_nome}</option>
                             )
-                        }) : ""
+                        }) : <option value="">Sem resultados</option>
                     }
                 </select>
             </>
@@ -255,7 +262,7 @@ const Cadastrar = ({
                             return (
                                 <option key={index} value={campeira.id}>{campeira.colmeia_nome}</option>
                             )
-                        }) : ""
+                        }) : <option value="">Sem resultados</option>
                     }
                 </select>
             </>
