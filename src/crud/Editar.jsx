@@ -50,10 +50,44 @@ const Editar = ({
             })
         }
 
-        if (name == "status_id" && value == 2) {
-            setTemMatriz(true);
-        } else {
-            setTemMatriz(false)
+        if (name == "especie_id") {
+            axios.get("http://localhost:8000/doadoras/disco/select", {
+                params: {
+                    usuario_id: usuarioId,
+                    especie_id: value
+                }
+            }).then((res) => {
+                setDoadoraDisco(res.data)
+                // setDesabilitarEspecie(false)
+            }).catch((err) => {
+                console.error(err);
+            })
+
+            axios.get("http://localhost:8000/doadoras/campeira/select", {
+                params: {
+                    usuario_id: usuarioId,
+                    especie_id: value
+                }
+            }).then((res) => {
+                setDoadoraCampeira(res.data)
+                // setDesabilitarEspecie(false)
+            }).catch((err) => {
+                console.error(err);
+            })
+        }
+
+        axios.get("http://localhost:8000/colmeias/tipodivisoes").then((res) => {
+            setTipoDivisao(res.data)
+        }).catch((err) => {
+            console.error(err);
+        })
+
+        if (name == "status_id") {
+            if (value == 1) {
+                setTemMatriz(false);
+            } else {
+                setTemMatriz(true);
+            }
         }
 
         setFormulario({

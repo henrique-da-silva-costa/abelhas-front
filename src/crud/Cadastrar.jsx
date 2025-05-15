@@ -92,10 +92,12 @@ const Cadastrar = ({
             console.error(err);
         })
 
-        if (name == "status_id" && value == 2) {
-            setTemMatriz(true);
-        } else {
-            setTemMatriz(false)
+        if (name == "status_id") {
+            if (value == 1) {
+                setTemMatriz(false);
+            } else {
+                setTemMatriz(true);
+            }
         }
 
         setFormulario({
