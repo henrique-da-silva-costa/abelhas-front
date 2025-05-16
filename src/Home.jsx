@@ -19,8 +19,6 @@ const Home = () => {
     }
 
     const [usuario] = useState(JSON.parse(sessionStorage.getItem("usuario")));
-    const [dropdownColmeias, setDropdownColmeias] = useState(false);
-    const [dropdownDoadoras, setDropdownDoadoras] = useState(false);
     const [isOpen, setIsOpen] = useState(false);
     const [componente, setComponente] = useState(componentes["Abelhas"]);
     const { setAuth } = useContext(Usuario);
@@ -49,8 +47,6 @@ const Home = () => {
     }
 
     const toggle = () => setIsOpen(!isOpen);
-    const togglesColmeias = () => setDropdownColmeias((prevState) => !prevState);
-    const togglesDoadoras = () => setDropdownDoadoras((prevState) => !prevState);
 
     return (
         <>
@@ -69,22 +65,10 @@ const Home = () => {
                     </OffcanvasHeader>
                     <OffcanvasBody>
                         <div className="d-flex flex-column gap-2 justify-content-end align-items-start">
-                            <Dropdown isOpen={dropdownColmeias} toggle={togglesColmeias} direction={'end'}>
-                                <DropdownToggle caret>COLMEIAS</DropdownToggle>
-                                <DropdownMenu className="p-2">
-                                    <Button color="primary" className="w-100 mb-2" onClick={() => linkPagina("Abelhas")}>Abelhas</Button>
-                                    <Button className="w-100" onClick={() => linkPagina("Divisoes")}>Divisoes</Button>
-                                </DropdownMenu>
-                            </Dropdown>
-
-                            <Dropdown isOpen={dropdownDoadoras} toggle={togglesDoadoras} direction={'end'}>
-                                <DropdownToggle caret>DOADORAS</DropdownToggle>
-                                <DropdownMenu className="p-2">
-                                    <Button className="w-100 mb-2" onClick={() => linkPagina("DoadorasCampeiras")}>Doadoras Campeiras</Button>
-                                    <Button className="w-100" onClick={() => linkPagina("DoadorasDiscos")}>Doadoras Discos</Button>
-                                </DropdownMenu>
-                            </Dropdown>
-
+                            <Button color="primary" className="w-100 mb-2" onClick={() => linkPagina("Abelhas")}>Abelhas</Button>
+                            <Button className="w-100" onClick={() => linkPagina("Divisoes")}>Divisoes</Button>
+                            <Button className="w-100 mb-2" onClick={() => linkPagina("DoadorasCampeiras")}>Doadoras Campeiras</Button>
+                            <Button className="w-100" onClick={() => linkPagina("DoadorasDiscos")}>Doadoras Discos</Button>
                             <Button color="danger" onClick={logOut}>SAIR</Button>
                         </div>
                     </OffcanvasBody>

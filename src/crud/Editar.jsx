@@ -96,8 +96,11 @@ const Editar = ({
     }
 
     const pegardados = () => {
+
         axios.get(`http://localhost:8000/${urlGet}`).then((res) => {
             setFormulario(res.data)
+            console.log(res.data.doadora_disco_id + " " + res.data.doadora_campeira_id);
+
 
             axios.get("http://localhost:8000/doadoras/campeira/select", { params: { usuario_id: usuarioId } }).then((res) => {
                 setDoadoraCampeira(res.data)
@@ -105,9 +108,22 @@ const Editar = ({
             }).catch((err) => {
                 console.error(err);
             })
+            axios.get("http://localhost:8000/doadora/campeira", { params: { id: res.data.doadora_campeira_id } }).then((res) => {
+                setDoadoraDisco(res.data)
+                // setDesabilitarEspecie(false)
+            }).catch((err) => {
+                console.error(err);
+            })
 
             axios.get("http://localhost:8000/doadoras/disco/select", { params: { usuario_id: usuarioId } }).then((res) => {
                 setDoadoraDisco(res.data)
+                // setDesabilitarEspecie(false)
+            }).catch((err) => {
+                console.error(err);
+            })
+            axios.get("http://localhost:8000/doadora/disco", { params: { id: res.data.doadora_disco_id } }).then((res) => {
+                setDoadoraDisco(res.data)
+                console.log(res.data);
                 // setDesabilitarEspecie(false)
             }).catch((err) => {
                 console.error(err);
@@ -310,7 +326,7 @@ const Editar = ({
         if (tipo == "doadora_disco_id") {
             return <>
                 <select name={tipo} disabled={desabilitar} onChange={changeformulario} className="form-control" defaultValue={formulario[tipo]} value={formulario.doadora_disco_id} >
-                    <option value={""}>Selecione...</option>
+                    <option value={doadoraDisco.id}>{doadoraDisco.colmeia_nome}</option>
                     {
                         doadoraDisco.length > 0 ? doadoraDisco.map((disco, index) => {
                             return (

@@ -65,10 +65,6 @@ export const inputInvisivelEDivisaoColunas = (tipo, temMatriz, formularioNome = 
 
     const tiposDNone = ["doadora_disco_id", "doadora_campeira_id", "tipo_divisao_id", "usuario_id", "id", "img_caminho", "tipo_doacao_id", "genero_select"];
 
-    // const sempreNone = ["id"]
-
-    const formularioAbelhasCol6 = [];
-    const formularioAbelhasCol3 = [];
     const formularioAbelhasTemId = ["genero_id", "especie_id", "status_id", "doadora_disco_id", "doadora_campeira_id", "tipo_divisao_id"];
 
     if (tiposDNone.includes(tipo)) {
