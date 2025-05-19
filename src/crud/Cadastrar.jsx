@@ -174,7 +174,7 @@ const Cadastrar = ({
                             return;
                         }
 
-                        if (value != null && value.length == 0) {
+                        if (!camposLivres.includes(key) && value != null && value.length == 0) {
                             msgerros[key] = "Campo obrigatório";
                         }
 
@@ -249,7 +249,7 @@ const Cadastrar = ({
                             return (
                                 <option key={index} value={disco.id}>{disco.colmeia_nome}</option>
                             )
-                        }) : <option value="">Sem resultados</option>
+                        }) : <option value={""}>Sem resultados</option>
                     }
                 </select>
             </>
@@ -264,7 +264,7 @@ const Cadastrar = ({
                             return (
                                 <option key={index} value={campeira.id}>{campeira.colmeia_nome}</option>
                             )
-                        }) : <option value="">Sem resultados</option>
+                        }) : <option value={""}>Sem resultados</option>
                     }
                 </select>
             </>
