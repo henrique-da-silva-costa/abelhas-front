@@ -4,7 +4,7 @@ import { Button, Container, Input, InputGroup } from 'reactstrap';
 
 const Filtros = ({ paginaAtual, pegarDados = () => { }, nomeFiltro = "" }) => {
     const [formulario, setFormulario] = useState({});
-    const [desabilitarEspecie, setDesabilitarEspecie] = useState(true);
+    const [desabilitarEspecie, setDesabilitarEspecie] = useState(false);
     const [especies, setEspecies] = useState([]);
     const formRef = useRef()
     const filtrosLimitados = ["doadoras", "divisoes"];
@@ -13,6 +13,8 @@ const Filtros = ({ paginaAtual, pegarDados = () => { }, nomeFiltro = "" }) => {
         const { name, value, files } = e.target;
 
         if (name == "genero" && value > 0) {
+            setDesabilitarEspecie(true);
+
             axios.get("http://localhost:8000/especies", { params: { genero_id: value } }).then((res) => {
                 setEspecies(res.data)
                 setDesabilitarEspecie(false)
@@ -24,12 +26,13 @@ const Filtros = ({ paginaAtual, pegarDados = () => { }, nomeFiltro = "" }) => {
         setFormulario({
             ...formulario, [name]: name === "img" ? files[0] : value
         });
+
     }
 
     const filtrar = (e) => {
         e.preventDefault();
         pegarDados(paginaAtual, formulario);
-        // setDesabilitarEspecie(true);
+        localStorage.setItem("filtros", JSON.stringify(formulario));
     }
 
     const limpar = (e) => {
@@ -37,6 +40,7 @@ const Filtros = ({ paginaAtual, pegarDados = () => { }, nomeFiltro = "" }) => {
         pegarDados(paginaAtual, {});
         setFormulario({});
         formRef.current.reset();
+        localStorage.setItem("filtros", JSON.stringify({}));
     }
 
     return (

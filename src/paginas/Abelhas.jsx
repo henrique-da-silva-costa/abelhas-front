@@ -58,7 +58,7 @@ const Abelhas = () => {
         })
 
         setTimeout(() => {
-            pegarDados(paginaAtual);
+            pegarDados(paginaAtual, JSON.parse(localStorage.getItem("filtros")));
         }, 1000);
     }, [paginaAtual]);
 
