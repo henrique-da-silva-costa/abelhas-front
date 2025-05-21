@@ -14,7 +14,7 @@ function ModalInformacoes({ textoBotao, conteudo, titulo }) {
                 <ModalHeader toggle={toggle}>{titulo}</ModalHeader>
                 <ModalBody className="text-break">
                     {/* {conteudo.length > 300 ? conteudo.slice(30) + "..." : conteudo} */}
-                    {conteudo.length > 500 ? conteudo.substr(0, 500) + "..." : conteudo}
+                    {conteudo && conteudo.length > 500 ? conteudo.substr(0, 500) + "..." : conteudo}
                 </ModalBody>
                 <ModalFooter>
                     <Button color="secondary" onClick={toggle}>

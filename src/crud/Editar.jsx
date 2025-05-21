@@ -204,8 +204,8 @@ const Editar = ({
                     withCredentials: true,
                     headers: {
                         "X-CSRF-TOKEN": response.data.token,
-                        // "Content-Type": "application/json",
-                        "Content-Type": "multipart/form-data",
+                        "Content-Type": "application/json",
+                        // "Content-Type": "multipart/form-data",
                     }
                 }).then(res => {
                     for (const [key, value] of Object.entries(formulario)) {
