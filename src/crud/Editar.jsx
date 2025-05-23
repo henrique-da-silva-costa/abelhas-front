@@ -6,6 +6,7 @@ import { MdEdit } from 'react-icons/md';
 import { inputInvisivelEDivisaoColunas, tipoLabel } from './validacoesFormulario';
 
 const Editar = ({
+    tipoDeDadosDoFormulario = "application/json",
     inputs = {},
     pegarDadosCarregar = () => { },
     url,
@@ -163,36 +164,11 @@ const Editar = ({
 
         const msgerros = {};
 
-        function jsonToFormData(json) {
-            const formData = new FormData();
+        const formularioData = new FormData();
 
-            for (const key in json) {
-                if (json.hasOwnProperty(key)) {
-                    // Se o valor for um objeto (como File), adiciona diretamente
-                    // Caso contrário, converte para string
-                    if (json[key] instanceof File || json[key] instanceof Blob) {
-                        formData.append(key, json[key]);
-                    } else if (typeof json[key] === 'object') {
-                        // Para objetos aninhados, você pode converter para JSON string
-                        formData.append(key, JSON.stringify(json[key]));
-                    } else {
-                        formData.append(key, json[key]);
-                    }
-                }
-            }
-
-            return formData;
-        }
-
-        const formData = jsonToFormData(formulario);
-
-        // Para verificar o conteúdo (apenas para debug)
-        // for (const [key, value] of formData.entries()) {
-        //     console.log(key, value);
-        // }
-
-        console.log(formData);
-
+        formularioData.append("id", formulario.id); // Mantém o arquivo como está
+        formularioData.append("img", formulario.img);
+        formularioData.append("img_caminho", formulario.img_caminho);
 
         setErro(msgerros);
         setDesabilitar(true);
@@ -200,12 +176,12 @@ const Editar = ({
 
         axios.get("http://localhost:8000/token", { withCredentials: true })
             .then(response => {
-                axios.put(`http://localhost:8000/${url}`, formData, {
+                axios.put(`http://localhost:8000/${url}`, formularioData, {
                     withCredentials: true,
                     headers: {
                         "X-CSRF-TOKEN": response.data.token,
-                        "Content-Type": "application/json",
-                        // "Content-Type": "multipart/form-data",
+                        // "Content-Type": tipoDeDadosDoFormulario,
+                        "Content-Type": "multipart/form-data",
                     }
                 }).then(res => {
                     for (const [key, value] of Object.entries(formulario)) {

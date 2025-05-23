@@ -73,7 +73,6 @@ const Abelhas = () => {
         img: null,
         nome: "",
         descricao: "",
-        // data_criacao: "",
         genero_id: "",
         especie_id: "",
         status_id: "",
@@ -117,10 +116,10 @@ const Abelhas = () => {
                                                 </Badge>
                                             </td>
                                             <td>
-
                                                 {dado.img ?
                                                     <img src={dado.img} height={50} alt="Imagem da colmeia"></img> : "SEM IMAGEM"
                                                 }
+                                                <Editar url={"colmeia/editar/img"} tipoDeDadosDoFormulario={"multipart/form-data"} urlGet={`colmeia/img?id=${dado.id}`} />
                                             </td>
                                             <td>
                                                 <ModalInformacoes titulo={"Descrição"} conteudo={dado.descricao} textoBotao={"VER MAIS"} />
