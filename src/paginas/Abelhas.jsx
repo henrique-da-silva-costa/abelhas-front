@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Badge, Button, Container, Form, Input, InputGroup, Table } from 'reactstrap'
+import { Badge, Button, Container, Table } from 'reactstrap'
 import Cadastrar from '../crud/Cadastrar'
 import axios from 'axios';
 import styles from "../stilos.module.css"
@@ -96,6 +96,7 @@ const Abelhas = () => {
                         <thead>
                             <tr>
                                 <th>NOME</th>
+                                <th>DATA CRIAÇÃO</th>
                                 <th>STATUS</th>
                                 <th>IMAGEM</th>
                                 <th>DESCRIÇÃO</th>
@@ -109,6 +110,9 @@ const Abelhas = () => {
                                         <tr key={i}>
                                             <td>
                                                 <p>{dado.nome}</p>
+                                            </td>
+                                            <td>
+                                                <p>{dado.data_criacao}</p>
                                             </td>
                                             <td>
                                                 <Badge color={dado.status_id == 2 ? "success" : "secondary"}>
