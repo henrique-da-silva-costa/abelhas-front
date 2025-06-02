@@ -52,7 +52,7 @@ const Cadastrar = ({
         }
 
         if (name == "genero_id" && value > 0) {
-            axios.get("http://localhost:8000/especies", { params: { genero_id: value } }).then((res) => {
+            axios.get("https://abelhas.shop//especies", { params: { genero_id: value } }).then((res) => {
                 setEspecies(res.data)
                 setDesabilitarEspecie(false)
             }).catch((err) => {
@@ -61,7 +61,7 @@ const Cadastrar = ({
         }
 
         if (name == "especie_id") {
-            axios.get("http://localhost:8000/doadoras/disco/select", {
+            axios.get("https://abelhas.shop//doadoras/disco/select", {
                 params: {
                     usuario_id: usuarioId,
                     especie_id: value
@@ -73,7 +73,7 @@ const Cadastrar = ({
                 console.error(err);
             })
 
-            axios.get("http://localhost:8000/doadoras/campeira/select", {
+            axios.get("https://abelhas.shop//doadoras/campeira/select", {
                 params: {
                     usuario_id: usuarioId,
                     especie_id: value
@@ -86,7 +86,7 @@ const Cadastrar = ({
             })
         }
 
-        axios.get("http://localhost:8000/colmeias/tipodivisoes").then((res) => {
+        axios.get("https://abelhas.shop//colmeias/tipodivisoes").then((res) => {
             setTipoDivisao(res.data)
         }).catch((err) => {
             console.error(err);
@@ -117,9 +117,9 @@ const Cadastrar = ({
         setDesabilitar(true);
         setTextoBotaoCarregando("CAREGANDO...")
 
-        axios.get("http://localhost:8000/token", { withCredentials: true })
+        axios.get("https://abelhas.shop//token", { withCredentials: true })
             .then(response => {
-                axios.post(`http://localhost:8000/${url}`, formulario, {
+                axios.post(`https://abelhas.shop//${url}`, formulario, {
                     withCredentials: true,
                     headers: {
                         "X-CSRF-TOKEN": response.data.token,
