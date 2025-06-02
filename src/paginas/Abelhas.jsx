@@ -45,13 +45,13 @@ const Abelhas = () => {
     }
 
     useEffect(() => {
-        axios.get("https://abelhas.shop//generos").then((res) => {
+        axios.get("https://abelhas.shop/generos").then((res) => {
             setGeneros(res.data)
         }).catch((err) => {
             console.error(err);
         })
 
-        axios.get("https://abelhas.shop//status").then((res) => {
+        axios.get("https://abelhas.shop/status").then((res) => {
             setStatus(res.data)
         }).catch((err) => {
             console.error(err);

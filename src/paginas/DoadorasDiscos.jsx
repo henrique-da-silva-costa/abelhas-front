@@ -46,7 +46,7 @@ const DoadorasDiscos = () => {
     }
 
     useEffect(() => {
-        axios.get("https://abelhas.shop//colmeias/matrizes", { params: { usuario_id: usuarioId } }).then((res) => {
+        axios.get("https://abelhas.shop/colmeias/matrizes", { params: { usuario_id: usuarioId } }).then((res) => {
             setColmeias(res.data)
             console.log(res.data)
         }).catch((err) => {
