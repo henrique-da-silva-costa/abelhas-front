@@ -6,10 +6,12 @@ export default defineConfig({
   plugins: [react()],
   server: {
     proxy: {
-      target: 'https://abelhas.shop/',
-      changeOrigin: true,
-      secure: false,
-      ws: true,
+      '/api': {
+        target: 'https://abelhas.shop/',
+        changeOrigin: true,
+        secure: false,
+        ws: true,
+      }
     }
   }
 })
