@@ -32,8 +32,6 @@ const Formulario = ({ inputs = {}, url, textoBotao, tipoformulario, corBotao = "
         setDesabilitar(true);
         setTextoBotaoCarregando("CAREGANDO...")
 
-        axios.defaults.baseURL = 'https://abelhas.shop';
-
         axios.get("https://abelhas.shop/token", { withCredentials: true })
             .then(response => {
                 console.log(response);
@@ -41,7 +39,7 @@ const Formulario = ({ inputs = {}, url, textoBotao, tipoformulario, corBotao = "
                     withCredentials: true,
                     headers: {
                         "X-CSRF-TOKEN": response.data.token,
-                        // "Content-Type": "multipart/form-data"
+                        "Content-Type": "application/json"
                     }
                 }).then(res => {
                     for (const [key, value] of Object.entries(formulario)) {
