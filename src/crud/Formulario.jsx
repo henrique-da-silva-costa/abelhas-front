@@ -32,10 +32,10 @@ const Formulario = ({ inputs = {}, url, textoBotao, tipoformulario, corBotao = "
         setDesabilitar(true);
         setTextoBotaoCarregando("CAREGANDO...")
 
-        console.log(formulario);
 
         axios.get("https://abelhas.shop/token", { withCredentials: true })
             .then(response => {
+                console.log(response);
                 axios.post(`https://abelhas.shop/${url}`, formulario, {
                     withCredentials: true,
                     headers: {
