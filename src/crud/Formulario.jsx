@@ -32,6 +32,7 @@ const Formulario = ({ inputs = {}, url, textoBotao, tipoformulario, corBotao = "
         setDesabilitar(true);
         setTextoBotaoCarregando("CAREGANDO...")
 
+        axios.defaults.baseURL = 'https://abelhas.shop';
 
         axios.get("https://abelhas.shop/token", { withCredentials: true })
             .then(response => {
