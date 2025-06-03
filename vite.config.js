@@ -7,7 +7,7 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'https://abelhas.shop/',
+        target: 'https://abelhas.shop',
         changeOrigin: true,
         secure: false,
         ws: true,
