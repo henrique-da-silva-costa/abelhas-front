@@ -32,6 +32,8 @@ const Formulario = ({ inputs = {}, url, textoBotao, tipoformulario, corBotao = "
         setDesabilitar(true);
         setTextoBotaoCarregando("CAREGANDO...")
 
+        console.log(formulario);
+
         axios.get("https://abelhas.shop/token", { withCredentials: true })
             .then(response => {
                 axios.post(`https://abelhas.shop/${url}`, formulario, {
