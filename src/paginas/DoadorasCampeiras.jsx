@@ -20,7 +20,7 @@ const DoadorasCampeiras = () => {
 
     const pegarDados = (page, filtros) => {
         setBotaoDesabilitado(true)
-        axios.get("http://127.0.0.1:8000/doadoras/campeira", {
+        axios.get("https://abelhas.shop/doadoras/campeira", {
             withCredentials: true,
             params: {
                 "usuario_id": usuarioId,

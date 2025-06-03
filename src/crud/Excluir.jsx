@@ -20,7 +20,7 @@ const Excluir = ({ titulo = "EXCLUIR", id = null, url, pegarDados = () => { } })
         setBotaoDesabilitar(true);
         setBotaoMsg("CAREGANDO...");
 
-        axios.options(`http://127.0.0.1:8000/${url}`, {
+        axios.options(`https://abelhas.shop/${url}`, {
             withCredentials: true,
             headers: {
                 "X-CSRF-TOKEN": localStorage.getItem("token")

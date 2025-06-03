@@ -22,7 +22,7 @@ const Abelhas = () => {
 
     const pegarDados = (page, filtros) => {
         setBotaoDesabilitado(true)
-        axios.get("http://127.0.0.1:8000/colmeias", {
+        axios.get("https://abelhas.shop/colmeias", {
             withCredentials: true,
             params: {
                 "usuario_id": usuarioId,

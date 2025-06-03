@@ -20,7 +20,7 @@ const DoadorasDiscos = () => {
 
     const pegarDados = (page, filtros) => {
         setBotaoDesabilitado(true)
-        axios.get("http://127.0.0.1:8000/doadoras/disco", {
+        axios.get("https://abelhas.shop/doadoras/disco", {
             withCredentials: true,
             params: {
                 "usuario_id": usuarioId,
