@@ -152,7 +152,7 @@ const Abelhas = () => {
                         >
                             Anterior
                         </Button>
-                        <div className="botaoPaginas">
+                        <div className={styles.botaoPaginas}>
                             {[...Array(totalPages)].map((_, index) => (
                                 <Button
                                     color="primary"

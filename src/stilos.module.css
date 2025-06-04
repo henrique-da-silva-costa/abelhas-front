@@ -3,8 +3,8 @@
 }
 
 .botaoPaginas {
-  gap: 5px;
   display: flex;
+  gap: 5px;
 }
 
 .imgUsuario {
@@ -56,6 +56,6 @@
   }
 
   .botaoPaginas {
-    display: none !important;
+    display: none;
   }
 }
