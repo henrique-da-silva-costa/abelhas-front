@@ -49,4 +49,8 @@
   .fonteUsuarioNome {
     font-size: 12px;
   }
+
+  .botao-paginas {
+    display: none;
+  }
 }

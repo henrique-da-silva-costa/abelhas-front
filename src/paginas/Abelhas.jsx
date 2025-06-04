@@ -152,17 +152,19 @@ const Abelhas = () => {
                         >
                             Anterior
                         </Button>
-                        {[...Array(totalPages)].map((_, index) => (
-                            <Button
-                                color="primary"
-                                disabled={index == paginaAtual - 1 ? true : botaoDesabilitado}
-                                key={index + 1}
-                                onClick={() => paginar(index + 1)}
-                                className={paginaAtual === index + 1 ? "active" : ""}
-                            >
-                                {index + 1}
-                            </Button>
-                        ))}
+                        <div className="botao-paginas">
+                            {[...Array(totalPages)].map((_, index) => (
+                                <Button
+                                    color="primary"
+                                    disabled={index == paginaAtual - 1 ? true : botaoDesabilitado}
+                                    key={index + 1}
+                                    onClick={() => paginar(index + 1)}
+                                    className={paginaAtual === index + 1 ? "active" : ""}
+                                >
+                                    {index + 1}
+                                </Button>
+                            ))}
+                        </div>
                         <Button
                             color="primary"
                             onClick={() => paginar(paginaAtual + 1)}
