@@ -22,7 +22,7 @@ const Abelhas = () => {
 
     const pegarDados = (page, filtros) => {
         setBotaoDesabilitado(true)
-        axios.get("https://abelhas.shop/colmeias", {
+        axios.get("http://localhost:8000/colmeias", {
             withCredentials: true,
             params: {
                 "usuario_id": usuarioId,
@@ -45,13 +45,13 @@ const Abelhas = () => {
     }
 
     useEffect(() => {
-        axios.get("https://abelhas.shop/generos").then((res) => {
+        axios.get("http://localhost:8000/generos").then((res) => {
             setGeneros(res.data)
         }).catch((err) => {
             console.error(err);
         })
 
-        axios.get("https://abelhas.shop/status").then((res) => {
+        axios.get("http://localhost:8000/status").then((res) => {
             setStatus(res.data)
         }).catch((err) => {
             console.error(err);
