@@ -20,7 +20,7 @@ const DoadorasCampeiras = () => {
 
     const pegarDados = (page, filtros) => {
         setBotaoDesabilitado(true)
-        axios.get("http://localhost:8000/doadoras/campeira", {
+        axios.get("https://abelhas.shop/doadoras/campeira", {
             withCredentials: true,
             params: {
                 "usuario_id": usuarioId,
@@ -46,7 +46,7 @@ const DoadorasCampeiras = () => {
     }
 
     useEffect(() => {
-        axios.get("http://localhost:8000/colmeias/matrizes", { params: { usuario_id: usuarioId } }).then((res) => {
+        axios.get("https://abelhas.shop/colmeias/matrizes", { params: { usuario_id: usuarioId } }).then((res) => {
             setColmeias(res.data)
             console.log(res.data)
         }).catch((err) => {
