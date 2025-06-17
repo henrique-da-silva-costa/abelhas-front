@@ -16,7 +16,7 @@ const Divisoes = () => {
 
     const pegarDados = (page, filtros) => {
         setBotaoDesabilitado(true)
-        axios.get("https://abelhas.shop/colmeias/divisoes", {
+        axios.get("http://localhost:8000/colmeias/divisoes", {
             withCredentials: true,
             params: {
                 "usuario_id": usuarioId,

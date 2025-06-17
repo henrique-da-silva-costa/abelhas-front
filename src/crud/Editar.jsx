@@ -44,7 +44,7 @@ const Editar = ({
         }
 
         if (name == "genero_id" && value > 0) {
-            axios.get("https://abelhas.shop/especies", { params: { genero_id: value } }).then((res) => {
+            axios.get("http://localhost:8000/especies", { params: { genero_id: value } }).then((res) => {
                 setEspecies(res.data)
             }).catch((err) => {
                 console.error(err);
@@ -52,7 +52,7 @@ const Editar = ({
         }
 
         if (name == "especie_id") {
-            axios.get("https://abelhas.shop/doadoras/disco/select", {
+            axios.get("http://localhost:8000/doadoras/disco/select", {
                 params: {
                     usuario_id: usuarioId,
                     especie_id: value
@@ -64,7 +64,7 @@ const Editar = ({
                 console.error(err);
             })
 
-            axios.get("https://abelhas.shop/doadoras/campeira/select", {
+            axios.get("http://localhost:8000/doadoras/campeira/select", {
                 params: {
                     usuario_id: usuarioId,
                     especie_id: value
@@ -77,7 +77,7 @@ const Editar = ({
             })
         }
 
-        axios.get("https://abelhas.shop/colmeias/tipodivisoes").then((res) => {
+        axios.get("http://localhost:8000/colmeias/tipodivisoes").then((res) => {
             setTipoDivisao(res.data)
         }).catch((err) => {
             console.error(err);
@@ -97,31 +97,31 @@ const Editar = ({
     }
 
     const pegardados = () => {
-        axios.get(`https://abelhas.shop/${urlGet}`).then((res) => {
+        axios.get(`http://localhost:8000/${urlGet}`).then((res) => {
             setFormulario(res.data)
             console.log(res.data.doadora_disco_id + " " + res.data.doadora_campeira_id);
 
 
-            axios.get("https://abelhas.shop/doadoras/campeira/select", { params: { usuario_id: usuarioId } }).then((res) => {
+            axios.get("http://localhost:8000/doadoras/campeira/select", { params: { usuario_id: usuarioId } }).then((res) => {
                 setDoadoraCampeira(res.data)
                 // setDesabilitarEspecie(false)
             }).catch((err) => {
                 console.error(err);
             })
-            axios.get("https://abelhas.shop/doadora/campeira", { params: { id: res.data.doadora_campeira_id } }).then((res) => {
+            axios.get("http://localhost:8000/doadora/campeira", { params: { id: res.data.doadora_campeira_id } }).then((res) => {
                 setDoadoraDisco(res.data)
                 // setDesabilitarEspecie(false)
             }).catch((err) => {
                 console.error(err);
             })
 
-            axios.get("https://abelhas.shop/doadoras/disco/select", { params: { usuario_id: usuarioId } }).then((res) => {
+            axios.get("http://localhost:8000/doadoras/disco/select", { params: { usuario_id: usuarioId } }).then((res) => {
                 setDoadoraDisco(res.data)
                 // setDesabilitarEspecie(false)
             }).catch((err) => {
                 console.error(err);
             })
-            axios.get("https://abelhas.shop/doadora/disco", { params: { id: res.data.doadora_disco_id } }).then((res) => {
+            axios.get("http://localhost:8000/doadora/disco", { params: { id: res.data.doadora_disco_id } }).then((res) => {
                 setDoadoraDisco(res.data)
                 console.log(res.data);
                 // setDesabilitarEspecie(false)
@@ -129,7 +129,7 @@ const Editar = ({
                 console.error(err);
             })
 
-            axios.get("https://abelhas.shop/colmeias/tipodivisoes").then((res) => {
+            axios.get("http://localhost:8000/colmeias/tipodivisoes").then((res) => {
                 setTipoDivisao(res.data)
                 // setDesabilitarEspecie(false)
             }).catch((err) => {
@@ -142,7 +142,7 @@ const Editar = ({
                 setTemMatriz(false)
             }
 
-            axios.get("https://abelhas.shop/especies", { params: { genero_id: res.data.genero_id } }).then((res) => {
+            axios.get("http://localhost:8000/especies", { params: { genero_id: res.data.genero_id } }).then((res) => {
                 setEspecies(res.data)
             }).catch((err) => {
                 console.error(err);
@@ -165,23 +165,32 @@ const Editar = ({
 
         const formularioData = new FormData();
 
-        formularioData.append("id", formulario.id); // Mantém o arquivo como está
-        formularioData.append("img", formulario.img);
+        Object.entries(formulario).forEach(([key, value]) => {
+            // Se for o campo de imagem e existir um arquivo
+            if (key === 'img' && value instanceof File) {
+                formularioData.append(key, value, value.name); // Adiciona o arquivo com o nome
+            } else {
+                formularioData.append(key, value); // Adiciona campos normais
+            }
+        });
 
-        console.log(formulario);
+        // 2. Debug: Mostra o que será enviado
+        for (let [key, value] of formularioData.entries()) {
+            console.log(key, value);
+        }
 
         setErro(msgerros);
         setDesabilitar(true);
         setTextoBotaoCarregando("CAREGANDO...")
 
-        axios.get("https://abelhas.shop/token", { withCredentials: true })
+        axios.get("http://localhost:8000/token", { withCredentials: true })
             .then(response => {
-                axios.put(`https://abelhas.shop/${url}`, formulario, {
+                axios.put(`http://localhost:8000/${url}`, formularioData, {
                     withCredentials: true,
                     headers: {
                         "X-CSRF-TOKEN": response.data.token,
                         // "Content-Type": tipoDeDadosDoFormulario,
-                        "Content-Type": "multipart/form-data",
+                        // "Content-Type": "multipart/form-data",
                     }
                 }).then(res => {
                     for (const [key, value] of Object.entries(formulario)) {

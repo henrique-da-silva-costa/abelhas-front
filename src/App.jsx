@@ -12,7 +12,7 @@ function App() {
   useEffect(() => {
     console.log(usuarioEmail);
 
-    axios.get("https://abelhas.shop/verificaremailapp", {
+    axios.get("http://localhost:8000/verificaremailapp", {
       withCredentials: true,
       params: { email: usuarioEmail }
     })
