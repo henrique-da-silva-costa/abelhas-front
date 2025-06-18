@@ -32,10 +32,10 @@ const Formulario = ({ inputs = {}, url, textoBotao, tipoformulario, corBotao = "
         setDesabilitar(true);
         setTextoBotaoCarregando("CAREGANDO...")
 
-        axios.get("http://localhost:8000/token", { withCredentials: true })
+        axios.get("https://abelhas.shop/token", { withCredentials: true })
             .then(response => {
                 console.log(response);
-                axios.post(`http://localhost:8000/${url}`, formulario, {
+                axios.post(`https://abelhas.shop/${url}`, formulario, {
                     withCredentials: true,
                     headers: {
                         "X-CSRF-TOKEN": response.data.token,
