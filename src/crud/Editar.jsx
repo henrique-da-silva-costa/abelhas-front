@@ -189,7 +189,7 @@ const Editar = ({
                     withCredentials: true,
                     headers: {
                         "X-CSRF-TOKEN": response.data.token,
-                        // "Content-Type": tipoDeDadosDoFormulario,
+                        "Content-Type": tipoDeDadosDoFormulario,
                         // "Content-Type": "multipart/form-data",
                     }
                 }).then(res => {
