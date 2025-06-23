@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { useRef, useState } from 'react'
 import { Button, Container, Input, InputGroup } from 'reactstrap';
+import styles from "../stilos.module.css"
 
 const Filtros = ({ paginaAtual, pegarDados = () => { }, nomeFiltro = "" }) => {
     const [formulario, setFormulario] = useState({});
@@ -46,31 +47,45 @@ const Filtros = ({ paginaAtual, pegarDados = () => { }, nomeFiltro = "" }) => {
     return (
         <Container>
             <form ref={formRef} onSubmit={filtrar}>
-                <InputGroup>
-                    <Input name="nome" onChange={changeformulario} />
-                    <select className={`form-control ${filtrosLimitados.includes(nomeFiltro) ? "d-none" : ""} `} onChange={changeformulario} name="status" id="">
-                        <option value="">SELECIONE</option>
-                        <option value="1">DIVISÃO</option>
-                        <option value="2">MATRIZ</option>
-                    </select>
-                    <select className="form-control" onChange={changeformulario} name="genero">
-                        <option value="">SELECIONE</option>
-                        <option value="1">Meliponas</option>
-                        <option value="2">Scaptrigonas</option>
-                        <option value="3">Trigonas</option>
-                    </select>
-                    <select className="form-control" disabled={desabilitarEspecie} onChange={changeformulario} name="especie">
-                        <option value="">SELECIONE</option>
-                        {especies.length > 0 ? especies.map((especie, index) => {
-                            return (
-                                <option key={index} value={especie.id}>{especie.especie}</option>
-                            )
-                        }) : <option value="">SELECIONE</option>}
-                    </select>
-                    <Button color="primary">Filtrar</Button>
-                </InputGroup>
+                <div className={`d-flex align-items-center gap-1 justify-content-center ${styles.divPaiFiltro}`}>
+                    <div className={styles.divFilhaFiltro}>
+                        <label>Nome</label>
+                        <Input name="nome" onChange={changeformulario} />
+                    </div>
+                    <div className={styles.divFilhaFiltro}>
+                        <label>Status</label>
+                        <select className={`form-control ${filtrosLimitados.includes(nomeFiltro) ? "d-none" : ""} `} onChange={changeformulario} name="status" id="">
+                            <option value="">SELECIONE</option>
+                            <option value="1">DIVISÃO</option>
+                            <option value="2">MATRIZ</option>
+                        </select>
+                    </div>
+                    <div className={styles.divFilhaFiltro}>
+                        <label>Gênero</label>
+                        <select className="form-control" onChange={changeformulario} name="genero">
+                            <option value="">SELECIONE</option>
+                            <option value="1">Meliponas</option>
+                            <option value="2">Scaptrigonas</option>
+                            <option value="3">Trigonas</option>
+                        </select>
+                    </div>
+                    <div className={styles.divFilhaFiltro}>
+                        <label>Espécie</label>
+                        <select className="form-control" disabled={desabilitarEspecie} onChange={changeformulario} name="especie">
+                            <option value="">SELECIONE</option>
+                            {especies.length > 0 ? especies.map((especie, index) => {
+                                return (
+                                    <option key={index} value={especie.id}>{especie.especie}</option>
+                                )
+                            }) : <option value="">SELECIONE</option>}
+                        </select>
+                    </div>
+                    <div className="d-flex align-self-end gap-1">
+                        <Button color="primary">Filtrar</Button>
+                        <Button onClick={limpar} color="secondary">Limpar</Button>
+                    </div>
+                </div>
             </form>
-            <Button className="mt-2" onClick={limpar} color="secondary">Limpar</Button>
         </Container>
     )
 }

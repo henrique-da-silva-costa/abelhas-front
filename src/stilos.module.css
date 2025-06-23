@@ -58,4 +58,12 @@
   .botaoPaginas {
     display: none;
   }
+
+  .divPaiFiltro {
+    flex-direction: column !important;
+  }
+
+  .divFilhaFiltro {
+    width: 100%;
+  }
 }
