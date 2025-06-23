@@ -8,6 +8,7 @@ import Editar from '../crud/Editar';
 import Excluir from '../crud/Excluir';
 import Filtros from './Filtros';
 import ModalInformacoes from '../componentes/ModalInformacoes';
+import moment from 'moment/moment';
 
 const Abelhas = () => {
     const usuarioId = sessionStorage.getItem("usuario") ? JSON.parse(sessionStorage.getItem("usuario")).id : "";
@@ -112,7 +113,7 @@ const Abelhas = () => {
                                                 <p>{dado.nome}</p>
                                             </td>
                                             <td>
-                                                <p>{dado.data_criacao}</p>
+                                                <p>{moment(dado.data_criacao).format("DD/MM/YY")}</p>
                                             </td>
                                             <td>
                                                 <Badge color={dado.status_id == 2 ? "success" : "secondary"}>
