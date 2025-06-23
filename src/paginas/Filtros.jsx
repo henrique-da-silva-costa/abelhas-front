@@ -81,8 +81,8 @@ const Filtros = ({ paginaAtual, pegarDados = () => { }, nomeFiltro = "" }) => {
                         </select>
                     </div>
                     <div className="d-flex align-self-end gap-1">
-                        <Button color="primary">Filtrar</Button>
                         <Button onClick={limpar} color="secondary">Limpar</Button>
+                        <Button color="primary">Filtrar</Button>
                     </div>
                 </div>
             </form>
