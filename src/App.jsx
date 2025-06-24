@@ -10,7 +10,7 @@ function App() {
   const usuarioEmail = sessionStorage.getItem("usuario") ? JSON.parse(sessionStorage.getItem("usuario")).email : "";
 
   useEffect(() => {
-    axios.get("http://localhost:8000/verificaremailapp", {
+    axios.get("https://abelhas.shop/verificaremailapp", {
       withCredentials: true,
       params: { email: usuarioEmail }
     })

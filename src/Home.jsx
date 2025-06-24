@@ -21,7 +21,7 @@ const Home = () => {
     useEffect(() => {
         setComponente(componentes[localStorage.getItem("pagina")]);
 
-        axios.get("https://abelhas.shop/token", { withCredentials: true })
+        axios.get("https://abelhas.shoptoken", { withCredentials: true })
             .then(response => {
                 localStorage.setItem("token", response.data.token);
             })
