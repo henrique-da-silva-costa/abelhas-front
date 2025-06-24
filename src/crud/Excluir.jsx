@@ -26,7 +26,7 @@ const Excluir = ({ titulo = "EXCLUIR", id = null, url, pegarDados = () => { } })
                 "X-CSRF-TOKEN": localStorage.getItem("token")
             }
         }).then((res) => {
-            if (res.data.error) {
+            if (res.data.erro) {
                 setMsg(res.data.msg);
                 setMsgCor(styles.erro);
                 setBotaoDesabilitar(false);
@@ -43,6 +43,8 @@ const Excluir = ({ titulo = "EXCLUIR", id = null, url, pegarDados = () => { } })
             }, 1200);
             setBotaoMsg("EXCLUIR");
         }).catch((err) => {
+
+
             setModal(true);
             if (!err.response) {
                 setMsg("Erro interno no servidor, contate o suporte")
