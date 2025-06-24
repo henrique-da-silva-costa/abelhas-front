@@ -32,10 +32,9 @@ const Formulario = ({ inputs = {}, url, textoBotao, tipoformulario, corBotao = "
         setDesabilitar(true);
         setTextoBotaoCarregando("CAREGANDO...")
 
-        axios.get("https://abelhas.shop/token", { withCredentials: true })
+        axios.get("http://localhost:8000/token", { withCredentials: true })
             .then(response => {
-                console.log(response);
-                axios.post(`https://abelhas.shop/${url}`, formulario, {
+                axios.post(`http://localhost:8000/${url}`, formulario, {
                     withCredentials: true,
                     headers: {
                         "X-CSRF-TOKEN": response.data.token,
@@ -102,8 +101,6 @@ const Formulario = ({ inputs = {}, url, textoBotao, tipoformulario, corBotao = "
                         setTextoBotaoCarregando(textoBotao)
                     }
                 }).catch(error => {
-                    console.error(error);
-
                     for (const [key, value] of Object.entries(formulario)) {
                         if (!error.response) {
                             setMsg("Erro interno no servidor, contate o suporte")
@@ -135,7 +132,14 @@ const Formulario = ({ inputs = {}, url, textoBotao, tipoformulario, corBotao = "
                 });
             })
             .catch(error => {
-                console.error(error);
+                if (!error.response) {
+                    setMsg("Erro interno no servidor, contate o suporte")
+                    setErro("");
+                }
+
+                setMsgCor(styles.erro);
+                setTextoBotaoCarregando(textoBotao);
+                setDesabilitar(false);
             });
     }
 

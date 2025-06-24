@@ -10,9 +10,7 @@ function App() {
   const usuarioEmail = sessionStorage.getItem("usuario") ? JSON.parse(sessionStorage.getItem("usuario")).email : "";
 
   useEffect(() => {
-    console.log(usuarioEmail);
-
-    axios.get("https://abelhas.shop/verificaremailapp", {
+    axios.get("http://localhost:8000/verificaremailapp", {
       withCredentials: true,
       params: { email: usuarioEmail }
     })
@@ -26,7 +24,6 @@ function App() {
       .catch(err => {
         console.error(err);
         if (err) {
-          // alert("algo deu errado. Por favor contate o suporte");
           setAuth(false);
         }
       });

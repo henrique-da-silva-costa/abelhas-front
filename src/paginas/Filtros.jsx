@@ -16,7 +16,7 @@ const Filtros = ({ paginaAtual, pegarDados = () => { }, nomeFiltro = "" }) => {
         if (name == "genero" && value > 0) {
             setDesabilitarEspecie(true);
 
-            axios.get("https://abelhas.shop/especies", { params: { genero_id: value } }).then((res) => {
+            axios.get("http://localhost:8000/especies", { params: { genero_id: value } }).then((res) => {
                 setEspecies(res.data)
                 setDesabilitarEspecie(false)
             }).catch((err) => {

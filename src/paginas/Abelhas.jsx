@@ -23,7 +23,7 @@ const Abelhas = () => {
 
     const pegarDados = (page, filtros) => {
         setBotaoDesabilitado(true)
-        axios.get("https://abelhas.shop/colmeias", {
+        axios.get("http://localhost:8000/colmeias", {
             withCredentials: true,
             params: {
                 "usuario_id": usuarioId,
@@ -46,13 +46,13 @@ const Abelhas = () => {
     }
 
     useEffect(() => {
-        axios.get("https://abelhas.shop/generos").then((res) => {
+        axios.get("http://localhost:8000/generos").then((res) => {
             setGeneros(res.data)
         }).catch((err) => {
             console.error(err);
         })
 
-        axios.get("https://abelhas.shop/status").then((res) => {
+        axios.get("http://localhost:8000/status").then((res) => {
             setStatus(res.data)
         }).catch((err) => {
             console.error(err);
@@ -122,9 +122,8 @@ const Abelhas = () => {
                                             </td>
                                             <td>
                                                 {dado.img ?
-                                                    <img src={dado.img} height={50} alt="Imagem da colmeia"></img> : "SEM IMAGEM"
+                                                    <img src={dado.img} height={50} alt="Imagem da colmeia"></img> : <span>SEM IMAGEM</span>
                                                 }
-                                                <Editar url={"colmeia/editar/img"} tipoDeDadosDoFormulario={"multipart/form-data"} urlGet={`colmeia/img?id=${dado.id}`} />
                                             </td>
                                             <td>
                                                 <ModalInformacoes titulo={"Descrição"} conteudo={dado.descricao} textoBotao={"VER MAIS"} />
