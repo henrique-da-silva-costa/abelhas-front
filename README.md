@@ -1,12 +1,21 @@
-# React + Vite
+# Gerenciador de colmeias
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Esse é um sistema de gerenciamento de colmeias sem ferrão. Onde você pode fazer o gerenciamento de suas colmeias. Criando uma colmeia, editando sua informações e até excluindo as colmeias indesejadas.
 
-Currently, two official plugins are available:
+Cada colmeia possui seu gênero e sua espécie.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+As colmeias podem ser multiplicadas oque se chama divisão.
 
-## Expanding the ESLint configuration
+Como funciona as divisões? Precisamos de uma ou duas colmeias que seja MATRIZ para fazer uma divisão. Onde vamos pegar Campeiras e discos para fazer a divisão.
 
-If you are developing a production application, we recommend using TypeScript and enable type-aware lint rules. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+Assim que uma divisão completa 6 meses ela se torna MATRIZ automaticamente.
+
+E para que uma matriz possa ser usada novamente, tem que esperar um período de 2 meses.
+
+# Tecnologias usadas nesse sistema
+
+## Back-end -> PHP/Laravel
+
+## Front-end -> React
+
+# Link do sistema rdando -> https://abelhas-front.vercel.app/
