@@ -18,4 +18,4 @@ E para que uma matriz possa ser usada novamente, tem que esperar um período de 
 
 ## Front-end -> React
 
-# Link do sistema rdando -> https://abelhas-front.vercel.app/
+# Link do sistema rodando -> https://abelhas-front.vercel.app/
