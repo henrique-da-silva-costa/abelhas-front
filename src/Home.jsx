@@ -65,7 +65,7 @@ const Home = () => {
                     </OffcanvasBody>
                 </Offcanvas>
             </div >
-            {componente}
+            {componente ? componente : ""}
         </>
     )
 }
